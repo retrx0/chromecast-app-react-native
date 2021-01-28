@@ -1,26 +1,33 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import {AntDesign, Feather} from '@expo/vector-icons'
+import {AntDesign, Feather, Ionicons} from '@expo/vector-icons'
+import { useTheme } from '@react-navigation/native';
 
 const RemoteScreen = () => {
+    const {colors} = useTheme();
     return (
-        <View>
-            <Text style = {styles.title}>Remote</Text>
+        <View style = {{flex: 1, flexDirection: 'column'}}>
+            <Text style = {{color: colors.text, fontSize: 30, alignSelf: 'center', margin: 10}}>Remote</Text>
+            <View style = {styles.row}>
+                <TouchableOpacity><Ionicons style = {{color: colors.text}} name = 'play-back-sharp' size = {80}/></TouchableOpacity>
+                <TouchableOpacity><Ionicons style = {{color: colors.text}} name = 'play-sharp' size = {80}/></TouchableOpacity>
+                <TouchableOpacity><Ionicons style = {{color: colors.text}} name = 'play-forward-sharp' size = {80}/></TouchableOpacity>
+            </View>
             <View style = {styles.row}>
                 <View style = {styles.col}>
-                    <Text style = {styles.buttonText}>Channels</Text>
-                    <TouchableOpacity><AntDesign name = 'caretup' size = {80}/></TouchableOpacity>
-                    <TouchableOpacity><AntDesign name = 'caretdown' size = {80}/></TouchableOpacity>
+                    <Text style = {{alignSelf: 'center', color:colors.text}}>Channels</Text>
+                    <TouchableOpacity><AntDesign style = {{color: colors.text}} name = 'caretup' size = {80}/></TouchableOpacity>
+                    <TouchableOpacity><AntDesign style = {{color: colors.text}} name = 'caretdown' size = {80}/></TouchableOpacity>
                 </View>
                 <View style = {styles.col}>
-                    <Text style = {styles.buttonText}>Volume</Text>
-                    <TouchableOpacity><AntDesign name = 'plus' size = {80}/></TouchableOpacity>
-                    <TouchableOpacity><AntDesign name = 'minus' size = {80}/></TouchableOpacity>
+                    <Text style = {{color: colors.text, alignSelf: 'center'}}>Volume</Text>
+                    <TouchableOpacity><AntDesign style = {{color: colors.text}} name = 'plus' size = {80}/></TouchableOpacity>
+                    <TouchableOpacity><AntDesign style = {{color: colors.text}} name = 'minus' size = {80}/></TouchableOpacity>
                 </View>
             </View>
             <View style = {styles.row}>
                 <TouchableOpacity style = {{flexDirection: 'row'}}>
-                    <Text>Edit Channel List </Text>
+                    <Text style = {{color: colors.text}} >Edit Channel List </Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -28,11 +35,6 @@ const RemoteScreen = () => {
 };
 
 const styles = StyleSheet.create({
-    title: {
-        fontSize: 30,
-        alignSelf: 'center',
-        margin: 10
-    },
     buttonText: {
         alignSelf: 'center',
         margin: 5
