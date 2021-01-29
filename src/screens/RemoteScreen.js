@@ -1,13 +1,13 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import {AntDesign, Feather, Ionicons} from '@expo/vector-icons'
+import {AntDesign, Feather, Ionicons, MaterialIcons} from '@expo/vector-icons'
 import { useTheme } from '@react-navigation/native';
 
 const RemoteScreen = () => {
     const {colors} = useTheme();
     return (
         <View style = {{flex: 1, flexDirection: 'column'}}>
-            <Text style = {{color: colors.text, fontSize: 30, alignSelf: 'center', margin: 10}}>Remote</Text>
+            <MaterialIcons name = 'settings-remote' style = {{color: colors.text, fontSize: 50, alignSelf: 'center', margin: 15}}/>
             <View style = {styles.row}>
                 <TouchableOpacity><Ionicons style = {{color: colors.text}} name = 'play-back-sharp' size = {80}/></TouchableOpacity>
                 <TouchableOpacity><Ionicons style = {{color: colors.text}} name = 'play-sharp' size = {80}/></TouchableOpacity>
@@ -41,7 +41,10 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
-        justifyContent: 'space-around'
+        justifyContent: 'space-around',
+        marginVertical: 20,
+        borderRadius: 8,
+        elevation: 10
     },
     col: {
         flexDirection: 'column',

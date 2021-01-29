@@ -11,7 +11,7 @@ const SearchBar = ({navigation}) => {
     const {colors} = useTheme();
     return (
         <View style = {{
-            height: 45,
+            height: 48,
             padding: 5,
             marginVertical: 5,
             flexDirection: 'row',

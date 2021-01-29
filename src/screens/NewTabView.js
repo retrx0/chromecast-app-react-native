@@ -1,23 +1,32 @@
-import React, {useContext} from 'react'
+import React, {useContext, useState, useEffect} from 'react'
 import { StyleSheet, View, Text, FlatList, TouchableOpacity, Image } from 'react-native';
 import Grid from 'react-native-grid-component';
 import BottomNav from '../components/BottomNav';
 import SearchBar from '../components/SearchBar';
 import {Context as uriContext} from '../context/SearchUriContext';
-import useChannels from '../hooks/useChannels';
+import {getChannels, storeChannels} from '../hooks/useChannels';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AppearanceProvider, useColorScheme } from 'react-native-appearance';
 import { useTheme } from '@react-navigation/native';
 
 const NewTabView = ({navigation}) =>{
-    const {getData} = useChannels();
-    // const [storeData, getData] = useChannels();
-    // if(getData() !== null){
-    //     const ls = getData(); 
-    //     const c = [];
-    //     for(var i in ls){c.push([i, ls[i]]);}
-    //     console.log(c); }else console.log("no");
-    
+    const [channels, setChannels] = useState([])
+    useEffect(() => {
+        const chans = getChannels();
+        chans.then((data) => {
+            if(data != null){
+                setChannels(data)
+            }else {
+                cha = [
+                    {title: 'f2movies.to', uri: 'http://www.f2movies.to', video_url: ''}, 
+                    {title: 'MBC 2', uri: 'http://www.3rbcafee.com/2019/04/MBC-Max-Live.html', video_url: ''}, 
+                    {title: 'Dubai One', uri: 'http://www.dubaione.ae/content/dubaione/en-ae/live.html', video_url: ''},
+                    {title: 'Youtube', uri: 'http://www.youtube.com', video_url: ''}
+                ]
+                storeChannels(cha);
+            }
+        })
+    }, [])
     // if (!getData){
     //     channels = [
     //         {title: 'f2movies.to', uri: 'http://www.f2movies.to'}, 
@@ -30,12 +39,12 @@ const NewTabView = ({navigation}) =>{
     //     for(var i in ls)
     //         channels.push([i, ls[i]]);
     // }
-    channels = [
-        {title: 'f2movies.to', uri: 'http://www.f2movies.to', video_url: ''}, 
-        {title: 'MBC 2', uri: 'http://www.3rbcafee.com/2019/04/MBC-Max-Live.html', video_url: ''}, 
-        {title: 'Dubai One', uri: 'http://www.dubaione.ae/content/dubaione/en-ae/live.html', video_url: ''},
-        {title: 'Youtube', uri: 'http://www.youtube.com', video_url: ''}
-    ]
+    // channels = [
+    //     {title: 'f2movies.to', uri: 'http://www.f2movies.to', video_url: ''}, 
+    //     {title: 'MBC 2', uri: 'http://www.3rbcafee.com/2019/04/MBC-Max-Live.html', video_url: ''}, 
+    //     {title: 'Dubai One', uri: 'http://www.dubaione.ae/content/dubaione/en-ae/live.html', video_url: ''},
+    //     {title: 'Youtube', uri: 'http://www.youtube.com', video_url: ''}
+    // ]
     const {colors} = useTheme();
     return (
             <View style = {styles.container}>
@@ -44,7 +53,7 @@ const NewTabView = ({navigation}) =>{
                 style = {{marginHorizontal: 10}} 
             />
             <View style = {{flex: 1}}>
-                <Text style = {{fontSize: 35, paddingHorizontal: 20, margin: 10, color: colors.text}}>Channels</Text>
+                <Text style = {{fontSize: 30, paddingHorizontal: 20, margin: 5, color: colors.text}}>Channels</Text>
                 <Grid 
                     style = {styles.grid}
                     // renderPlaceholder={(id) => {}}
@@ -58,7 +67,7 @@ const NewTabView = ({navigation}) =>{
                                         style = {styles.itemicon} 
                                         source = {{uri: `https://s2.googleusercontent.com/s2/favicons?domain=${item.uri}`}} 
                                     />
-                                    <Text style = {{alignSelf: 'center', color: colors.text}}>{item.title}</Text>
+                                    <Text style = {{alignSelf: 'center', color: colors.text, paddingVertical: 5}}>{item.title}</Text>
                                 </TouchableOpacity>
                             </View>
                         );
@@ -76,28 +85,20 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    title: {
-        fontSize: 35,
-        paddingHorizontal: 20,
-        margin: 10
-    },
     grid: {
         flex: 1
     },
     item: {
-        height: 50, width: 50, flex: 1,
-        padding: 10, margin: 5, elevation: 10
+        flex: 1,
+        padding: 10, margin: 5, elevation: 10, borderRadius: 8
     },
     itemicon: {
-        height: 50, width: 50, alignSelf: 'center'
+        height: 20, width: 20, alignSelf: 'center'
     },
     bottom: {
         alignSelf: 'flex-end',
         marginBottom: 20
     },
-    castButton: {
-        paddingHorizontal: 10
-    }
 });
 
 export default NewTabView;

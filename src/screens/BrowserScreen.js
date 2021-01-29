@@ -1,4 +1,4 @@
-import React, {useContext, useState, useRef} from 'react';
+import React, {useContext, useState, useRef, useEffect} from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Alert, Modal, ActivityIndicator} from 'react-native';
 import {Feather} from '@expo/vector-icons';
 import BottomNav from '../components/BottomNav';
@@ -6,9 +6,8 @@ import SearchBar from '../components/SearchBar';
 import WebView from 'react-native-webview';
 import { createStackNavigator, HeaderBackButton } from 'react-navigation-stack';
 import {Context as uriContext} from '../context/SearchUriContext';
-import AddDialog from '../components/AddChannelDialog';
-import Dialog from "react-native-dialog";
 import { useTheme } from '@react-navigation/native';
+import {getChannels, storeChannels} from '../hooks/useChannels'
 // import {CastButton} from 'react-native-google-cast';
 
 const BrowserScreen = ({navigation}) => {
@@ -42,7 +41,10 @@ const BrowserScreen = ({navigation}) => {
                     source = {uri}
                     onError={(syntheticEvent) => {
                         const { nativeEvent } = syntheticEvent;
-                        navigation.navigate('Browser', {uri: `http://api.duckduckgo.com/?q=${uri.uri}`});
+                        const qs = String(uri.uri);
+                        const query = qs.substr(qs.indexOf('.')+1);
+                        console.log(query)
+                        navigation.navigate('Browser', {uri: `http://api.duckduckgo.com/?q=${query}`});
                       }}
                     onNavigationStateChange={(webViewState) => 
                         {
@@ -60,6 +62,9 @@ const BrowserScreen = ({navigation}) => {
                             }else {
                                 navigation.setParams({forwardPage: null });
                               }
+                            navigation.setParams({
+                                currentPageUrl: { title: webViewState.title, url: webViewState.url},
+                            });
                         }
                     }
                     incognito = {true}
@@ -69,25 +74,53 @@ const BrowserScreen = ({navigation}) => {
     );
 };
 
-const addChannelToList = (title) => {
+const addChannelToList = (obj) => {
+    const channels = getChannels();
+    const [stations, setStations] = useState([]);  
+        channels.then((data) => {
+            setStations(data);
+        }
+        );
+    console.log(stations);
+    setStations([...stations, obj])
+    console.log(stations);
+}
 
+const AddChannelButton = ({navigation}) => {
+    const channels = getChannels();
+    const [stations, setStations] = useState([]);  
+    useEffect(() => {
+        channels.then((data) => {setStations(data);});
+    }, [])
+    const uri = navigation.getParam('currentPageUrl');
+    const {colors} = useTheme();
+    const add = (obj) => {
+        setStations([...stations, obj]);
+        storeChannels(stations);
+    }
+    return (
+        <TouchableOpacity 
+            onPress = {() => {   
+                Alert.prompt('Give the channel a name', 
+                `Adding ${uri} to channel list`,
+                [{text: 'Cancel', onPress: () => console.log("Cancel Adding"), style: 'cancel'},
+                {text: 'Add', 
+                onPress: (title) => { 
+                    console.log(stations);
+                    add({title: title, uri: uri.url, video_uri: ''})
+                    }, 
+                style: 'default'}],
+                'plain-text')
+            }}>
+            <Feather name = 'plus' size = {30} style = {[styles.addButton, {color: colors.text}]}/>
+        </TouchableOpacity>
+    );
 }
 
 BrowserScreen.navigationOptions = ({navigation}) => {
     return {
         headerRight: () => 
-            <TouchableOpacity 
-            onPress = {() => 
-                {
-                    Alert.prompt('Give the channel a name', 
-                    `Adding ${navigation.state.params.uri} to channel list`,
-                    [   {text: 'Cancel', onPress: () => console.log("CAN"), style: 'cancel'},
-                        {text: 'Add', onPress: (text) => console.log(text), style: 'default'}
-                    ],
-                    'plain-text')
-                }}>
-                <Feather name = 'plus' size = {30} style = {styles.addButton}/>
-            </TouchableOpacity>
+            <AddChannelButton navigation = {navigation}/>
     };
 };
 
