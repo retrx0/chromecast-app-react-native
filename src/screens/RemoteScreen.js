@@ -1,19 +1,22 @@
-import React from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import {
   AntDesign,
-  Feather,
   Ionicons,
-  MaterialIcons,
 } from "@expo/vector-icons";
 import { useTheme } from "@react-navigation/native";
+import { getChannels, storeChannels } from "../hooks/useChannels";
 
-const RemoteScreen = () => {
+const RemoteScreen = ({ navigation }) => {
   const { colors } = useTheme();
+
   return (
-    <View
-      style={{ flex: 1, flexDirection: "column", justifyContent: "center" }}
-    >
+    <View style={{ flex: 1, justifyContent: "center" }}>
       <View
         style={[styles.row, { borderColor: colors.border, borderWidth: 1 }]}
       >
@@ -39,10 +42,10 @@ const RemoteScreen = () => {
           />
         </TouchableOpacity>
       </View>
-      <View
-        style={[styles.row, { borderColor: colors.border, borderWidth: 1 }]}
-      >
-        <View style={styles.col}>
+      <View style={[styles.row]}>
+        <View
+          style={[styles.col, { borderColor: colors.border, borderWidth: 1 }]}
+        >
           <Text style={{ alignSelf: "center", color: colors.text }}>
             Channels
           </Text>
@@ -61,7 +64,9 @@ const RemoteScreen = () => {
             />
           </TouchableOpacity>
         </View>
-        <View style={styles.col}>
+        <View
+          style={[styles.col, { borderColor: colors.border, borderWidth: 1 }]}
+        >
           <Text style={{ color: colors.text, alignSelf: "center" }}>
             Volume
           </Text>
@@ -73,8 +78,14 @@ const RemoteScreen = () => {
           </TouchableOpacity>
         </View>
       </View>
+
       <View style={styles.row}>
-        <TouchableOpacity style={{ flexDirection: "row" }}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Edit");
+          }}
+          style={{ flexDirection: "row" }}
+        >
           <Text style={{ color: colors.text }}>Edit channels list </Text>
         </TouchableOpacity>
       </View>
@@ -91,7 +102,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     marginVertical: 20,
-    borderRadius: 10,
+    borderRadius: 15,
     marginHorizontal: 10,
     padding: 5,
   },
@@ -99,9 +110,15 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignSelf: "center",
     marginVertical: 10,
-    borderRadius: 10,
+    borderRadius: 15,
     marginHorizontal: 10,
-    padding: 5,
+    padding: 10,
+  },
+  centered: {
+    flex: 1,
+    justifyContent: "center",
+    alignSelf: "center",
+    flexDirection: "column",
   },
 });
 

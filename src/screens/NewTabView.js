@@ -3,7 +3,6 @@ import {
   StyleSheet,
   View,
   Text,
-  FlatList,
   TouchableOpacity,
   Image,
   Alert,
@@ -25,12 +24,11 @@ const NewTabView = ({ navigation }) => {
     const listener = navigation.addListener("didFocus", () => {
       const ch = getChannels();
       ch.then((data) => {
-        if (data != null) {
-          setChannels(data);
+        if (data != null || data != undefined) {
+          if (data.length != 0) setChannels(data);
         } else {
           getItem("@use-default-channles").then((res) => {
-            console.log(res);
-            if (res === "false") {
+            if (res === "false" && data.length == 0) {
             }
           });
           cha = [
@@ -82,7 +80,11 @@ const NewTabView = ({ navigation }) => {
           renderItem={(item, id) => {
             return (
               <View
-                style={[styles.item, { backgroundColor: colors.card }]}
+                style={[
+                  styles.item,
+                  { backgroundColor: colors.card },
+                  styles.dropShadow,
+                ]}
                 key={id}
               >
                 <TouchableOpacity
@@ -200,6 +202,16 @@ const styles = StyleSheet.create({
   bottom: {
     alignSelf: "flex-end",
     marginBottom: 20,
+  },
+  dropShadow: {
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowColor: "#000",
+    shadowOpacity: 0.05,
+    shadowRadius: 3,
+    elevation: 5,
   },
 });
 

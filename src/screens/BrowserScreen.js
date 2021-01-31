@@ -96,14 +96,14 @@ const AddChannelButton = ({ navigation }) => {
       setStations(data);
     });
   }, []);
-  const uri = navigation.getParam("currentPageUrl");
+  const clink = navigation.getParam("currentPageUrl");
   const { colors } = useTheme();
 
   return (
     <TouchableOpacity
       onPress={() => {
         Alert.alert(
-          `Add ${uri.title} to channel list`,
+          `Add ${clink.title} to channel list`,
           "",
           [
             {
@@ -114,22 +114,28 @@ const AddChannelButton = ({ navigation }) => {
             {
               text: "Add",
               onPress: () => {
-                storeChannels([
-                  ...stations,
-                  { title: uri.title, uri: uri.url, video_uri: "" },
-                ])
-                  .then(() =>
-                    Alert.alert(
-                      "Channel Added",
-                      `${uri.title} added to your channle list`
-                    )
-                  )
-                  .catch(() =>
-                    Alert.alert(
-                      "Something went wrong",
-                      "Could not add channel to list"
-                    )
-                  );
+                channelContains(clink, channels).then((exist) => {
+                  if (!exist) {
+                    storeChannels([
+                      ...stations,
+                      { title: clink.title, uri: clink.url, video_uri: "" },
+                    ])
+                      .then(() =>
+                        Alert.alert(
+                          "Channel Added",
+                          `${clink.title} added to your channle list`
+                        )
+                      )
+                      .catch(() =>
+                        Alert.alert(
+                          "Something went wrong",
+                          "Could not add channel to list"
+                        )
+                      );
+                  } else {
+                    Alert.alert("You already added this channel", "");
+                  }
+                });
               },
               style: "default",
             },
@@ -151,6 +157,16 @@ BrowserScreen.navigationOptions = ({ navigation }) => {
   return {
     headerRight: () => <AddChannelButton navigation={navigation} />,
   };
+};
+
+const channelContains = (item, cha) => {
+  let exist = cha.then((data) => {
+    for (let i in data) {
+      if (data[i].uri === item.url) return true;
+    }
+    return false;
+  });
+  return exist;
 };
 
 const styles = StyleSheet.create({

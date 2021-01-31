@@ -17,6 +17,7 @@ const SettingsScreen = ({ navigation }) => {
   const scheme = useColorScheme();
   const { colors } = useTheme();
   const [isDarkModeEnabled, setIsDarkModeEnabled] = useState(false);
+  const [isStoreChacheEnabled, setIsStoreCacheEnabled] = useState(false);
   const [
     isUseDefaultChannlesEnabled,
     setIsUSeDefaultChannelsEnabled,
@@ -26,6 +27,9 @@ const SettingsScreen = ({ navigation }) => {
 
   const toggleUseDefaultChannlesSwitch = () =>
     setIsUSeDefaultChannelsEnabled((state) => !state);
+
+  const toggleStoreChacheSwitch = () =>
+    setIsStoreCacheEnabled((previousState) => !previousState);
   return (
     <View style={styles.container}>
       <Text
@@ -33,7 +37,8 @@ const SettingsScreen = ({ navigation }) => {
           color: colors.text,
           fontSize: 35,
           paddingHorizontal: 10,
-          margin: 10,
+          marginVertical: 10,
+          fontWeight: "500",
         }}
       >
         Settings
@@ -75,6 +80,21 @@ const SettingsScreen = ({ navigation }) => {
           }}
         />
       </View>
+
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Edit")}
+        style={[styles.row, { backgroundColor: colors.card }]}
+      >
+        <Text style={[styles.settingsItemText, { color: colors.text }]}>
+          Edit Channels
+        </Text>
+        <MaterialIcons
+          name="edit"
+          size={25}
+          style={[{ color: colors.text }, styles.settingsIcon]}
+        />
+      </TouchableOpacity>
+
       <TouchableOpacity
         onPress={() => {
           Alert.alert(
@@ -85,7 +105,7 @@ const SettingsScreen = ({ navigation }) => {
               {
                 text: "Clear",
                 onPress: () => {
-                  AsyncStorage.clear()
+                  AsyncStorage.removeItem("@channels")
                     .then(() => {
                       Alert.alert(
                         "Channel list cleared",
@@ -116,44 +136,49 @@ const SettingsScreen = ({ navigation }) => {
         />
       </TouchableOpacity>
 
-      <TouchableOpacity style={[styles.row, { backgroundColor: colors.card }]}>
-        <Text style={[styles.settingsItemText, { color: colors.text }]}>
-          Edit Channels
-        </Text>
-        <MaterialIcons
-          name="edit"
-          size={25}
-          style={[{ color: colors.text }, styles.settingsIcon]}
-        />
-      </TouchableOpacity>
-
       <Text style={[{ color: colors.text }, styles.categoryText]}>Browser</Text>
-      <TouchableOpacity style={[styles.row, { backgroundColor: colors.card }]}>
+      <View style={[styles.row, { backgroundColor: colors.card }]}>
         <Text style={[styles.settingsItemText, { color: colors.text }]}>
-          Clear Cache
+          Store Cache and History
         </Text>
-        <MaterialIcons
-          name="clear"
-          size={25}
-          style={[{ color: colors.text }, styles.settingsIcon]}
+        <Switch
+          style={styles.settingsSwitch}
+          value={isStoreChacheEnabled}
+          onValueChange={() => {
+            toggleStoreChacheSwitch();
+            const dm = isStoreChacheEnabled ? "true" : "false";
+            console.log(dm);
+            // storeItem("@dark-mode-enabled", dm);
+          }}
         />
-      </TouchableOpacity>
+      </View>
 
-      <TouchableOpacity style={[styles.row, { backgroundColor: colors.card }]}>
+      <Text style={[{ color: colors.text }, styles.categoryText]}>Player</Text>
+      <View style={[styles.row, { backgroundColor: colors.card }]}>
         <Text style={[styles.settingsItemText, { color: colors.text }]}>
-          Clear History
+          Auto play after connecting
         </Text>
-        <MaterialIcons
-          name="history"
-          size={25}
-          style={[{ color: colors.text }, styles.settingsIcon]}
+        <Switch
+          style={styles.settingsSwitch}
+          value={isStoreChacheEnabled}
+          onValueChange={() => {
+            toggleStoreChacheSwitch();
+            const dm = isStoreChacheEnabled ? "true" : "false";
+            console.log(dm);
+            // storeItem("@dark-mode-enabled", dm);
+          }}
         />
-      </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
-const getPrefereces = () => {};
+const getPrefereces = () => {
+  const dakrMode = getItem("@dark-mode-enabled").then(() => {});
+  const useDefChannels = getItem("@use-default-channles").then(() => {});
+  const autoPlayChannel = getItem("@dark-mode-enabled").then(() => {});
+  const storeCache = getItem("@dark-mode-enabled").then(() => {});
+};
 
 const styles = StyleSheet.create({
   row: {
@@ -163,8 +188,8 @@ const styles = StyleSheet.create({
   },
   categoryText: {
     padding: 10,
-    margin: 10,
-    fontSize: 20,
+    margin: 5,
+    fontSize: 18,
   },
   settingsItemText: {
     padding: 10,

@@ -1,11 +1,11 @@
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import React from "react";
-import { StyleSheet } from "react-native";
 import BrowserScreen from "./src/screens/BrowserScreen";
 import RemoteScreen from "./src/screens/RemoteScreen";
 import SettingsScreen from "./src/screens/SettingsScreen";
 import NewTabView from "./src/screens/NewTabView";
+import EditChannelsScreen from "./src/screens/EditChannelsScreen";
 import { Provider as SearchUriProvider } from "./src/context/SearchUriContext";
 import { AppearanceProvider, useColorScheme } from "react-native-appearance";
 import {
@@ -20,9 +20,11 @@ const stackNavigator = createStackNavigator(
     Home: NewTabView,
     Remote: RemoteScreen,
     Settings: SettingsScreen,
+    Edit: EditChannelsScreen,
   },
   {
     initialRouteName: "Home",
+    mode: "modal",
   }
 );
 
