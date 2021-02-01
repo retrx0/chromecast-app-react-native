@@ -33,6 +33,8 @@ const BrowserScreen = ({ navigation }) => {
   const ref = useRef(null);
   const { colors } = useTheme();
   const [defSearchEngine, setDefSearchEngine] = useState("ecosia");
+  const [isCacheAndHsitory, setIsCacheAndHsitory] = useState(false);
+
   useEffect(() => {
     AsyncStorage.getItem("@default-search-engine").then((data) => {
       if (data != null) {
@@ -46,8 +48,10 @@ const BrowserScreen = ({ navigation }) => {
         }
       } else setDefSearchEngine("duckduckgo");
     });
+    AsyncStorage.getItem("@store-cache").then((data) => {
+      setIsCacheAndHsitory(data === "false" ? true : false);
+    });
   }, []);
-
   return (
     <View style={styles.container}>
       {/* <SearchBar 
@@ -62,7 +66,8 @@ const BrowserScreen = ({ navigation }) => {
         allowsBackForwardNavigationGestures={true}
         startInLoadingState={true}
         pullToRefreshEnabled={true}
-        cacheEnabled={false}
+        cacheEnabled={isCacheAndHsitory}
+        incognito={true}
         renderLoading={() => (
           <>
             <View
@@ -109,7 +114,6 @@ const BrowserScreen = ({ navigation }) => {
             },
           });
         }}
-        incognito={true}
       />
       <BottomNav navigation={navigation} style={styles.bottom}></BottomNav>
     </View>
