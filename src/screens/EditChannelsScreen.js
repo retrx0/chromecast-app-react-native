@@ -9,7 +9,7 @@ import {
   Image,
   SafeAreaView,
 } from "react-native";
-import { Feather, MaterialIcons } from "@expo/vector-icons";
+import { Feather, MaterialIcons, AntDesign } from "@expo/vector-icons";
 import { useTheme } from "@react-navigation/native";
 import { getChannels, storeChannels } from "../hooks/useChannels";
 
@@ -81,9 +81,9 @@ const EditChannelsScreen = ({ navigation }) => {
                       }
                     }}
                   >
-                    <Feather
+                    <AntDesign
                       style={[{ color: colors.text }, styles.listItemButton]}
-                      name="chevron-up"
+                      name="caretup"
                     />
                   </TouchableOpacity>
                   <TouchableOpacity
@@ -99,9 +99,9 @@ const EditChannelsScreen = ({ navigation }) => {
                       }
                     }}
                   >
-                    <Feather
+                    <AntDesign
                       style={[{ color: colors.text }, styles.listItemButton]}
-                      name="chevron-down"
+                      name="caretdown"
                     />
                   </TouchableOpacity>
                   <TouchableOpacity

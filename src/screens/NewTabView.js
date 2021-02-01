@@ -17,6 +17,7 @@ import {
   storeItem,
 } from "../hooks/useChannels";
 import { useTheme } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const NewTabView = ({ navigation }) => {
   const [channels, setChannels] = useState([]);
@@ -27,30 +28,35 @@ const NewTabView = ({ navigation }) => {
         if (data != null || data != undefined) {
           if (data.length != 0) setChannels(data);
         } else {
-          getItem("@use-default-channles").then((res) => {
-            if (res === "false" && data.length == 0) {
+          AsyncStorage.getItem("@use-default-channles").then((res) => {
+            if (res === "false") {
+              cha = [
+                {
+                  title: "f2movies.to",
+                  uri: "http://www.f2movies.to",
+                  video_url: "",
+                },
+                {
+                  title: "MBC Max",
+                  uri: "http://www.3rbcafee.com/2019/04/MBC-Max-Live.html",
+                  video_url: "",
+                },
+                {
+                  title: "Dubai One",
+                  uri:
+                    "http://www.dubaione.ae/content/dubaione/en-ae/live.html",
+                  video_url: "",
+                },
+                {
+                  title: "Fmovies",
+                  uri: "http://www.fmovies.to",
+                  video_url: "",
+                },
+              ];
+              storeChannels(cha);
+              setChannels(cha);
             }
           });
-          cha = [
-            {
-              title: "f2movies.to",
-              uri: "http://www.f2movies.to",
-              video_url: "",
-            },
-            {
-              title: "MBC Max",
-              uri: "http://www.3rbcafee.com/2019/04/MBC-Max-Live.html",
-              video_url: "",
-            },
-            {
-              title: "Dubai One",
-              uri: "http://www.dubaione.ae/content/dubaione/en-ae/live.html",
-              video_url: "",
-            },
-            { title: "Fmovies", uri: "http://www.fmovies.to", video_url: "" },
-          ];
-          storeChannels(cha);
-          setChannels(cha);
         }
       });
     });

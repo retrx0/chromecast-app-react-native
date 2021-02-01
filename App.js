@@ -1,6 +1,6 @@
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
-import React from "react";
+import React, { useState } from "react";
 import BrowserScreen from "./src/screens/BrowserScreen";
 import RemoteScreen from "./src/screens/RemoteScreen";
 import SettingsScreen from "./src/screens/SettingsScreen";
@@ -13,6 +13,7 @@ import {
   DefaultTheme,
   DarkTheme,
 } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const stackNavigator = createStackNavigator(
   {
@@ -32,13 +33,23 @@ const App = createAppContainer(stackNavigator);
 
 export default () => {
   const scheme = useColorScheme();
+  const [darkmode, setDarkmode] = useState("light");
+  AsyncStorage.getItem("@dark-mode-enabled").then((data) => {
+    if (data != null) {
+      let d = data === "false" ? true : false;
+      if (d) {
+        let mode = scheme === "dark" ? "dark" : "light";
+        setDarkmode(mode);
+      }
+    }
+  });
   return (
     <SearchUriProvider>
       <AppearanceProvider>
         <NavigationContainer
-          theme={scheme === "dark" ? DarkTheme : DefaultTheme}
+          theme={darkmode === "dark" ? DarkTheme : DefaultTheme}
         >
-          <App theme={scheme === "dark" ? "dark" : "light"} />
+          <App theme={darkmode} />
         </NavigationContainer>
       </AppearanceProvider>
     </SearchUriProvider>

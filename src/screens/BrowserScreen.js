@@ -15,7 +15,13 @@ import WebView from "react-native-webview";
 import { createStackNavigator, HeaderBackButton } from "react-navigation-stack";
 import { Context as uriContext } from "../context/SearchUriContext";
 import { useTheme } from "@react-navigation/native";
-import { getChannels, storeChannels } from "../hooks/useChannels";
+import {
+  getChannels,
+  storeChannels,
+  getItem,
+  storeItem,
+} from "../hooks/useChannels";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 // import {CastButton} from 'react-native-google-cast';
 
 const BrowserScreen = ({ navigation }) => {
@@ -23,9 +29,25 @@ const BrowserScreen = ({ navigation }) => {
   // const discoveryManager = GoogleCast.getDiscoveryManager();
   // discoveryManager.startDiscovery();
   // const {state} = useContext(uriContext);
-  const uri = { uri: navigation.state.params.uri };
+  const [uri, setUri] = useState({ uri: navigation.state.params.uri });
   const ref = useRef(null);
   const { colors } = useTheme();
+  const [defSearchEngine, setDefSearchEngine] = useState("ecosia");
+  useEffect(() => {
+    AsyncStorage.getItem("@default-search-engine").then((data) => {
+      if (data != null) {
+        setDefSearchEngine(data);
+        const qs = String(uri.uri);
+        const query = qs.substr(qs.indexOf(".") + 1);
+        if (!(query.indexOf(".") >= 0)) {
+          setUri({
+            uri: `https://www.${data}.com/search/?q=${query}`,
+          });
+        }
+      } else setDefSearchEngine("duckduckgo");
+    });
+  }, []);
+
   return (
     <View style={styles.container}>
       {/* <SearchBar 
@@ -41,19 +63,25 @@ const BrowserScreen = ({ navigation }) => {
         startInLoadingState={true}
         pullToRefreshEnabled={true}
         cacheEnabled={false}
-        // renderLoading={() => (
-        //   <>
-        //     <ActivityIndicator style={{ alignSelf: "center" }} size="large" />
-        //   </>
-        // )}
+        renderLoading={() => (
+          <>
+            <View
+              style={{ height: "100%", backgroundColor: colors.background }}
+            >
+              <ActivityIndicator
+                style={{ alignSelf: "center", margin: 10 }}
+                size="large"
+              />
+            </View>
+          </>
+        )}
         source={uri}
         onError={(syntheticEvent) => {
           const { nativeEvent } = syntheticEvent;
           const qs = String(uri.uri);
           const query = qs.substr(qs.indexOf(".") + 1);
-          console.log(query);
           navigation.navigate("Browser", {
-            uri: `http://api.duckduckgo.com/?q=${query}`,
+            uri: `https://www.${defSearchEngine}.com/search/?q=${query}`,
           });
         }}
         onNavigationStateChange={(webViewState) => {
