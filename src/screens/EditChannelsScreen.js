@@ -28,6 +28,9 @@ const EditChannelsScreen = ({ navigation }) => {
           {
             backgroundColor: colors.card,
             marginVertical: 10,
+            marginHorizontal: 8,
+            paddingHorizontal: 5,
+            borderRadius: 5,
           },
         ]}
       >
@@ -35,7 +38,7 @@ const EditChannelsScreen = ({ navigation }) => {
           data={channels}
           extraData={change}
           keyExtractor={(item) => item.title}
-          style={{ flexDirection: "column" }}
+          style={{ flexDirection: "column", height: 500 }}
           renderItem={({ item, index }) => {
             return (
               <View style={styles.listItem}>
@@ -132,7 +135,9 @@ const EditChannelsScreen = ({ navigation }) => {
           <Button
             title="Done"
             onPress={() => {
-              storeChannels([...channels]);
+              if (channels !== null) {
+                storeChannels([...channels]);
+              }
               navigation.goBack();
             }}
           />

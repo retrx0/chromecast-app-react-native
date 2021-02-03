@@ -12,8 +12,6 @@ import { Feather } from "@expo/vector-icons";
 import BottomNav from "../components/BottomNav";
 import SearchBar from "../components/SearchBar";
 import WebView from "react-native-webview";
-import { createStackNavigator, HeaderBackButton } from "react-navigation-stack";
-import { Context as uriContext } from "../context/SearchUriContext";
 import { useTheme } from "@react-navigation/native";
 import {
   getChannels,
@@ -22,13 +20,9 @@ import {
   storeItem,
 } from "../hooks/useChannels";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// import {CastButton} from 'react-native-google-cast';
+import { CastButton } from "react-native-google-cast";
 
 const BrowserScreen = ({ navigation }) => {
-  // const client = useRemoteMediaClient();
-  // const discoveryManager = GoogleCast.getDiscoveryManager();
-  // discoveryManager.startDiscovery();
-  // const {state} = useContext(uriContext);
   const [uri, setUri] = useState({ uri: navigation.state.params.uri });
   const ref = useRef(null);
   const { colors } = useTheme();
@@ -37,21 +31,45 @@ const BrowserScreen = ({ navigation }) => {
 
   useEffect(() => {
     AsyncStorage.getItem("@default-search-engine").then((data) => {
-      if (data != null) {
+      if (data !== null) {
         setDefSearchEngine(data);
         const qs = String(uri.uri);
         const query = qs.substr(qs.indexOf(".") + 1);
-        if (!(query.indexOf(".") >= 0)) {
+        if (query.indexOf(".") < 0) {
           setUri({
             uri: `https://www.${data}.com/search/?q=${query}`,
           });
+          console.log(uri);
         }
-      } else setDefSearchEngine("duckduckgo");
+      } else {
+        setDefSearchEngine("duckduckgo");
+        setUri({
+          uri: `https://api.${defSearchEngine}.com/search/?q=${query}`,
+        });
+      }
     });
     AsyncStorage.getItem("@store-cache").then((data) => {
       setIsCacheAndHsitory(data === "false" ? true : false);
     });
   }, []);
+
+  const _onMessage = (event) => {
+    console.log("_onMessage", JSON.parse(event.nativeEvent.data));
+    const res = JSON.parse(event.nativeEvent.data);
+    if (res.message === "ok") {
+      alert("button clicked");
+    }
+  };
+
+  const video_scrapper = `document.getElementByTag('video').addEventListener('playing', function() {  
+    window.ReactNativeWebView.postMessage(JSON.stringify({type: "click", message : "ok"})); });true;`;
+
+  const ts = `document.getElementsByTagName('video');
+              document.getElementsByTagName('video').addEventListener("playing", function() {  
+              window.ReactNativeWebView.postMessage(JSON.stringify({type: "click", message : "ok"}));
+            }); 
+            true;`;
+
   return (
     <View style={styles.container}>
       {/* <SearchBar 
@@ -67,6 +85,9 @@ const BrowserScreen = ({ navigation }) => {
         startInLoadingState={true}
         pullToRefreshEnabled={true}
         cacheEnabled={isCacheAndHsitory}
+        javaScriptEnabled={true}
+        // injectedJavaScript={ts}
+        onMessage={_onMessage}
         incognito={true}
         renderLoading={() => (
           <>

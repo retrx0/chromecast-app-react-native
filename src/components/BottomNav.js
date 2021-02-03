@@ -1,7 +1,13 @@
 import React from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
-import { MaterialCommunityIcons, Feather, AntDesign } from "@expo/vector-icons";
+import {
+  MaterialCommunityIcons,
+  Feather,
+  AntDesign,
+  Ionicons,
+} from "@expo/vector-icons";
 import { useTheme } from "@react-navigation/native";
+import { CastButton } from "react-native-google-cast";
 
 const BottomNav = ({ navigation }) => {
   const { colors } = useTheme();
@@ -13,7 +19,7 @@ const BottomNav = ({ navigation }) => {
         justifyContent: "space-around",
         backgroundColor: "#fcfcfc",
         borderRadius: 12,
-        height: 70,
+        height: 65,
         padding: 10,
         backgroundColor: colors.card,
       }}
@@ -44,9 +50,6 @@ const BottomNav = ({ navigation }) => {
           name="remote-tv"
           size={30}
         />
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <Feather style={{ color: colors.text }} name="cast" size={30} />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
         <Feather style={{ color: colors.text }} name="settings" size={30} />

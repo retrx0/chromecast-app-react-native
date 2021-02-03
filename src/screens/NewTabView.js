@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   Image,
   Alert,
+  ActionSheetIOS,
+  Platform,
 } from "react-native";
 import Grid from "react-native-grid-component";
 import BottomNav from "../components/BottomNav";
@@ -18,9 +20,40 @@ import {
 } from "../hooks/useChannels";
 import { useTheme } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import GoogleCast, { CastButton } from "react-native-google-cast";
+import { useRemoteMediaClient } from "react-native-google-cast";
+import { useColorScheme } from "react-native-appearance";
+import { Feather } from "@expo/vector-icons";
 
 const NewTabView = ({ navigation }) => {
   const [channels, setChannels] = useState([]);
+  const [loaded, setLoaded] = useState(false);
+  const client = useRemoteMediaClient();
+  if (client) {
+    if (!loaded) {
+      AsyncStorage.getItem("@auto-play").then((data) => {
+        if (data !== null) {
+          if (data === "false") {
+            client.loadMedia({
+              mediaInfo: {
+                contentUrl: channels[0].video_url,
+                metadata: {
+                  // images: [
+                  //   {
+                  //     url:
+                  //       "https://commondatastorage.googleapis.com/gtv-videos-bucket/CastVideos/images/480x270/BigBuckBunny.jpg",
+                  //   },
+                  // ],
+                  title: channels[0].title,
+                },
+              },
+            });
+            setLoaded(true);
+          }
+        }
+      });
+    }
+  }
   useEffect(() => {
     const listener = navigation.addListener("didFocus", () => {
       const ch = getChannels();
@@ -32,25 +65,37 @@ const NewTabView = ({ navigation }) => {
             if (res === "false") {
               cha = [
                 {
-                  title: "f2movies.to",
-                  uri: "http://www.f2movies.to",
-                  video_url: "",
-                },
-                {
                   title: "MBC Max",
                   uri: "http://www.3rbcafee.com/2019/04/MBC-Max-Live.html",
-                  video_url: "",
+                  video_url:
+                    "https://shls-mbcmax-prod-dub.shahid.net/out/v1/13815a7cda864c249a88c38e66a2e653/index_4.m3u8",
+                },
+                {
+                  title: "MBC 2",
+                  uri:
+                    "http://www.3rbcafee.com/2019/04/MBC-2-Live-Streaming.html",
+                  video_url:
+                    "https://shls-mbc2-prod-dub.shahid.net/out/v1/b4befe19798745fe986f5a9bfba62126/index_4.m3u8",
+                },
+                {
+                  title: "MBC Action",
+                  uri:
+                    "http://www.3rbcafee.com/2019/04/MBC-Action-Live-Streaming.html",
+                  video_url:
+                    "https://shls-mbcaction-prod-dub.shahid.net/out/v1/68dd761538e5460096c42422199d050b/index.m3u8",
                 },
                 {
                   title: "Dubai One",
                   uri:
                     "http://www.dubaione.ae/content/dubaione/en-ae/live.html",
-                  video_url: "",
+                  video_url:
+                    "http://www.elahmad.com/tv/m3u8/dubaitv.m3u8?id=dubaione",
                 },
                 {
-                  title: "Fmovies",
-                  uri: "http://www.fmovies.to",
-                  video_url: "",
+                  title: "Aljazeera",
+                  uri: "http://www.aljazeera.com/live",
+                  video_url:
+                    "https://live-hls-web-aje.getaj.net/AJE/02.m3u8?@amarnettv.live",
                 },
               ];
               storeChannels(cha);
@@ -64,6 +109,7 @@ const NewTabView = ({ navigation }) => {
   }, []);
 
   const { colors } = useTheme();
+  const scheme = useColorScheme();
   return (
     <View style={styles.container}>
       <SearchBar navigation={navigation} style={{ marginHorizontal: 10 }} />
@@ -76,7 +122,7 @@ const NewTabView = ({ navigation }) => {
             color: colors.text,
           }}
         >
-          Channels
+          Live channels
         </Text>
         <Grid
           style={styles.grid}
@@ -96,6 +142,48 @@ const NewTabView = ({ navigation }) => {
                 <TouchableOpacity
                   onPress={() => {
                     navigation.navigate("Browser", { uri: item.uri });
+                  }}
+                  onLongPress={() => {
+                    if (Platform.OS === "ios") {
+                      ActionSheetIOS.showActionSheetWithOptions(
+                        {
+                          options: [
+                            "Play",
+                            "Open in browser",
+                            "Delete",
+                            "Cancel",
+                          ],
+                          destructiveButtonIndex: 2,
+                          cancelButtonIndex: 3,
+                          userInterfaceStyle:
+                            scheme === "dark" ? "dark" : "light",
+                        },
+                        (buttonIndex) => {
+                          const index = getIndex(item, channels);
+                          if (buttonIndex === 0) {
+                            if (client) {
+                              client.loadMedia({
+                                mediaInfo: {
+                                  contentUrl: channels[index].video_url,
+                                  metadata: {
+                                    title: channels[index].title,
+                                  },
+                                },
+                              });
+                            } else {
+                              GoogleCast.showCastDialog();
+                            }
+                          } else if (buttonIndex === 1) {
+                            navigation.navigate("Browser", { uri: item.uri });
+                          } else if (buttonIndex === 2) {
+                            const index = getIndex(item, channels);
+                            channels.splice(index, 1);
+                            setChannels([...channels]);
+                            storeChannels([...channels]);
+                          }
+                        }
+                      );
+                    }
                   }}
                 >
                   <Image
@@ -123,6 +211,29 @@ const NewTabView = ({ navigation }) => {
       <BottomNav navigation={navigation} style={styles.bottom}></BottomNav>
     </View>
   );
+};
+
+NewTabView.navigationOptions = () => {
+  return {
+    headerRight: () => (
+      <CastButton
+        style={{
+          width: 40,
+          height: 40,
+          marginHorizontal: 10,
+          marginVertical: 5,
+          tintColor: useColorScheme() === "dark" ? "#fcfcfc" : "black",
+        }}
+      />
+    ),
+  };
+};
+
+const getIndex = (item, cha) => {
+  let index = cha.findIndex((elem) => {
+    if (elem.uri === item.uri) return true;
+  });
+  return index;
 };
 
 const getFavicon = (item) => {

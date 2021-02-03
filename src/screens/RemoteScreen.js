@@ -1,45 +1,50 @@
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import {
   AntDesign,
   Ionicons,
+  MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import { useTheme } from "@react-navigation/native";
 import { getChannels, storeChannels } from "../hooks/useChannels";
+import GoogleCast, {
+  useRemoteMediaClient,
+  useCastSession,
+} from "react-native-google-cast";
 
 const RemoteScreen = ({ navigation }) => {
   const { colors } = useTheme();
+  const client = useRemoteMediaClient();
+  const session = useCastSession();
+  const [channels, setChannels] = useState([]);
+  const [idx, setIdx] = useState(0);
+
+  useEffect(() => {
+    getChannels().then((data) => {
+      if (data !== null) {
+        setChannels(data);
+      }
+    });
+  }, []);
 
   return (
     <View style={{ flex: 1, justifyContent: "center" }}>
       <View
         style={[styles.row, { borderColor: colors.border, borderWidth: 1 }]}
       >
-        <TouchableOpacity>
-          <Ionicons
-            style={{ color: colors.text }}
-            name="play-back-sharp"
+        <TouchableOpacity
+          onPress={() => {
+            GoogleCast.showExpandedControls();
+          }}
+        >
+          <MaterialCommunityIcons
+            style={{ color: colors.text, alignSelf: "center" }}
+            name="remote"
             size={80}
           />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Ionicons
-            style={{ color: colors.text }}
-            name="play-sharp"
-            size={80}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Ionicons
-            style={{ color: colors.text }}
-            name="play-forward-sharp"
-            size={80}
-          />
+          <Text style={{ color: colors.text, alignSelf: "center", padding: 5 }}>
+            Show Controls
+          </Text>
         </TouchableOpacity>
       </View>
       <View style={[styles.row]}>
@@ -49,14 +54,46 @@ const RemoteScreen = ({ navigation }) => {
           <Text style={{ alignSelf: "center", color: colors.text }}>
             Channels
           </Text>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              if (idx === 0) {
+                setIdx(channels.length - 1);
+              } else setIdx(idx - 1);
+              if (client) {
+                client.loadMedia({
+                  mediaInfo: {
+                    contentUrl: channels[idx].video_url,
+                    metadata: {
+                      title: channels[idx].title,
+                    },
+                  },
+                });
+              }
+            }}
+          >
             <AntDesign
               style={{ color: colors.text }}
               name="caretup"
               size={80}
             />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              if (idx === channels.length - 1) {
+                setIdx(0);
+              } else setIdx(idx + 1);
+              if (client) {
+                client.loadMedia({
+                  mediaInfo: {
+                    contentUrl: channels[idx].video_url,
+                    metadata: {
+                      title: channels[idx].title,
+                    },
+                  },
+                });
+              }
+            }}
+          >
             <AntDesign
               style={{ color: colors.text }}
               name="caretdown"
@@ -70,10 +107,36 @@ const RemoteScreen = ({ navigation }) => {
           <Text style={{ color: colors.text, alignSelf: "center" }}>
             Volume
           </Text>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              if (session) {
+                session.getVolume().then((data) => {
+                  if (data !== null) {
+                    if (data !== 1.0) {
+                      // session.setVolume(Math.floor(1));
+                      console.log(data);
+                    }
+                  }
+                });
+              }
+            }}
+          >
             <AntDesign style={{ color: colors.text }} name="plus" size={80} />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              if (session) {
+                session.getVolume().then((data) => {
+                  if (data !== null) {
+                    console.log(data);
+                    if (data !== 0) {
+                      // session.setVolume(data);
+                    }
+                  }
+                });
+              }
+            }}
+          >
             <AntDesign style={{ color: colors.text }} name="minus" size={80} />
           </TouchableOpacity>
         </View>
@@ -91,6 +154,13 @@ const RemoteScreen = ({ navigation }) => {
       </View>
     </View>
   );
+};
+
+const getIndex = (item, cha) => {
+  let index = cha.findIndex((elem) => {
+    if (elem.uri === item.uri) return true;
+  });
+  return index;
 };
 
 const styles = StyleSheet.create({

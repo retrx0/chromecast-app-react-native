@@ -15,6 +15,29 @@ import {
 } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+const customTheme = {
+  dark: true,
+  roundness: 4,
+  colors: {
+    primary: "#3A87FA",
+    accent: "#B113FE",
+    background: "#111111",
+    tint: "#fcfcfc",
+    card: "#222222",
+    border: "#111111",
+    surface: "#F1F7ED",
+    text: "#FcFcFc",
+    error: "#B71F0E",
+    disabled: "#BEC6C6",
+    placeholder: "#f2f2f2",
+    backdrop: "#001021",
+  },
+  fonts: {
+    regular: "Helvetica Neue",
+    medium: "Helvetica Neue Light",
+  },
+};
+
 const stackNavigator = createStackNavigator(
   {
     Browser: BrowserScreen,
@@ -47,7 +70,7 @@ export default () => {
     <SearchUriProvider>
       <AppearanceProvider>
         <NavigationContainer
-          theme={darkmode === "dark" ? DarkTheme : DefaultTheme}
+          theme={darkmode === "dark" ? customTheme : DefaultTheme}
         >
           <App theme={darkmode} />
         </NavigationContainer>

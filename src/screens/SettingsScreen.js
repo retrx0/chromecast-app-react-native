@@ -16,7 +16,6 @@ import {
 import { useColorScheme } from "react-native-appearance";
 import { storeItem, getItem } from "../hooks/useChannels";
 import { Picker } from "@react-native-picker/picker";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 const SettingsScreen = ({ navigation }) => {
   const scheme = useColorScheme();
@@ -78,6 +77,7 @@ const SettingsScreen = ({ navigation }) => {
         setIsAutoPlayEnabled(true);
         setIsStoreCacheEnabled(false);
         setDefaultSearchEngine("duckduckgo");
+        AsyncStorage.setItem("@default-search-engine", "duckduckgo");
       }
     });
   }, []);
@@ -229,7 +229,12 @@ const SettingsScreen = ({ navigation }) => {
       </View>
       <Modal visible={modalVisible} transparent={true}>
         <View
-          style={{ flex: 1, flexDirection: "column", justifyContent: "center" }}
+          style={{
+            flex: 1,
+            flexDirection: "column",
+            justifyContent: "center",
+            marginHorizontal: 10,
+          }}
         >
           <View
             style={[
@@ -237,13 +242,14 @@ const SettingsScreen = ({ navigation }) => {
                 backgroundColor: colors.card,
                 margin: 10,
                 borderRadius: 15,
+                padding: 10,
               },
               styles.dropShadow,
             ]}
           >
             <Picker
               selectedValue={defaultSearchEngine}
-              style={{}}
+              style={{ color: colors.text }}
               itemStyle={{ color: colors.text }}
               prompt="Set Default Search Engine"
               onValueChange={(itemValue, itemIndex) => {

@@ -18,14 +18,16 @@
     ],
     "ios": {
       "userInterfaceStyle": "automatic",
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.castapp"
     },
     "android": {
       "userInterfaceStyle": "automatic",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.castapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
