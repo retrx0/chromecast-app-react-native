@@ -18,8 +18,9 @@ const BottomNav = ({ navigation }) => {
         alignItems: "baseline",
         justifyContent: "space-around",
         backgroundColor: "#fcfcfc",
-        borderRadius: 12,
-        height: 65,
+        borderTopLeftRadius: 12,
+        borderTopRightRadius: 12,
+        height: 70,
         padding: 10,
         backgroundColor: colors.card,
       }}

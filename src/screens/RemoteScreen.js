@@ -29,24 +29,6 @@ const RemoteScreen = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1, justifyContent: "center" }}>
-      <View
-        style={[styles.row, { borderColor: colors.border, borderWidth: 1 }]}
-      >
-        <TouchableOpacity
-          onPress={() => {
-            GoogleCast.showExpandedControls();
-          }}
-        >
-          <MaterialCommunityIcons
-            style={{ color: colors.text, alignSelf: "center" }}
-            name="remote"
-            size={80}
-          />
-          <Text style={{ color: colors.text, alignSelf: "center", padding: 5 }}>
-            Show Controls
-          </Text>
-        </TouchableOpacity>
-      </View>
       <View style={[styles.row]}>
         <View
           style={[styles.col, { borderColor: colors.border, borderWidth: 1 }]}
@@ -104,40 +86,19 @@ const RemoteScreen = ({ navigation }) => {
         <View
           style={[styles.col, { borderColor: colors.border, borderWidth: 1 }]}
         >
-          <Text style={{ color: colors.text, alignSelf: "center" }}>
-            Volume
+          <Text style={{ color: colors.text, alignSelf: "center", margin: 10 }}>
+            Controls
           </Text>
           <TouchableOpacity
             onPress={() => {
-              if (session) {
-                session.getVolume().then((data) => {
-                  if (data !== null) {
-                    if (data !== 1.0) {
-                      // session.setVolume(Math.floor(1));
-                      console.log(data);
-                    }
-                  }
-                });
-              }
+              GoogleCast.showExpandedControls();
             }}
           >
-            <AntDesign style={{ color: colors.text }} name="plus" size={80} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              if (session) {
-                session.getVolume().then((data) => {
-                  if (data !== null) {
-                    console.log(data);
-                    if (data !== 0) {
-                      // session.setVolume(data);
-                    }
-                  }
-                });
-              }
-            }}
-          >
-            <AntDesign style={{ color: colors.text }} name="minus" size={80} />
+            <MaterialCommunityIcons
+              style={{ color: colors.text, alignSelf: "center" }}
+              name="remote"
+              size={80}
+            />
           </TouchableOpacity>
         </View>
       </View>

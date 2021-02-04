@@ -13,7 +13,6 @@ const SearchBar = ({ navigation }) => {
         padding: 5,
         marginVertical: 5,
         flexDirection: "row",
-        backgroundColor: colors.background,
       }}
     >
       <TextInput
@@ -23,8 +22,8 @@ const SearchBar = ({ navigation }) => {
           borderColor: colors.border,
           borderWidth: 0.3,
           borderRadius: 8,
-          height: 38,
-          paddingLeft: 5,
+          height: 40,
+          paddingLeft: 7,
           backgroundColor: colors.card,
           color: colors.text,
         }}
@@ -36,9 +35,9 @@ const SearchBar = ({ navigation }) => {
         autoCorrect={false}
         value={address}
         onChangeText={setAddress}
-        onFocus={() => setAddress("http://www.")}
+        onFocus={() => setAddress("")}
         onSubmitEditing={() => {
-          navigation.navigate("Browser", { uri: address });
+          navigation.navigate("Browser", { uri: `http://www.${address}` });
         }}
       />
     </View>

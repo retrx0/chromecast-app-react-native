@@ -38,7 +38,7 @@ const EditChannelsScreen = ({ navigation }) => {
           data={channels}
           extraData={change}
           keyExtractor={(item) => item.title}
-          style={{ flexDirection: "column", height: 500 }}
+          style={{ flexDirection: "column", maxHeight: 500 }}
           renderItem={({ item, index }) => {
             return (
               <View style={styles.listItem}>

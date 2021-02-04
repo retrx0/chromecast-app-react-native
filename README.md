@@ -1,4 +1,4 @@
-<h1><img align="left" width="80" height="80" src="./assets/icon.png" style = "float:left; margin: 0px 10px 0px 10px; border-radius: 15px;" alt="logo"> 
+<h1><img align="left" width="80" height="80" src="./assets/icon-transparent.png" style = "float:left; margin: 0px 10px 0px 10px; border-radius: 15px;" alt="logo"> 
 React Native Chromecast Application</h1>
 <br>
 <br>

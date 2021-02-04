@@ -30,16 +30,25 @@ const BrowserScreen = ({ navigation }) => {
   const [isCacheAndHsitory, setIsCacheAndHsitory] = useState(false);
 
   useEffect(() => {
+    const qs = String(uri.uri);
+    const query = qs.substr(qs.indexOf(".") + 1);
     AsyncStorage.getItem("@default-search-engine").then((data) => {
       if (data !== null) {
         setDefSearchEngine(data);
-        const qs = String(uri.uri);
-        const query = qs.substr(qs.indexOf(".") + 1);
         if (query.indexOf(".") < 0) {
-          setUri({
-            uri: `https://www.${data}.com/search/?q=${query}`,
-          });
-          console.log(uri);
+          if (data === "duckduckgo") {
+            setUri({
+              uri: `https://api.${data}.com/search/?q=${query}`,
+            });
+          } else if (data === "google") {
+            setUri({
+              uri: `https://www.${data}.com/#q=${query}`,
+            });
+          } else {
+            setUri({
+              uri: `https://www.${data}.com/search/?q=${query}`,
+            });
+          }
         }
       } else {
         setDefSearchEngine("duckduckgo");
