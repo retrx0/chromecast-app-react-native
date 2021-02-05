@@ -22,7 +22,7 @@ const BottomNav = ({ navigation }) => {
         borderTopRightRadius: 12,
         height: 70,
         padding: 10,
-        backgroundColor: colors.card,
+        backgroundColor: colors.background,
       }}
     >
       <TouchableOpacity

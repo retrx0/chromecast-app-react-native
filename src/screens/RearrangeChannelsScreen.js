@@ -13,7 +13,7 @@ import { Feather, MaterialIcons, AntDesign } from "@expo/vector-icons";
 import { useTheme } from "@react-navigation/native";
 import { getChannels, storeChannels } from "../hooks/useChannels";
 
-const EditChannelsScreen = ({ navigation }) => {
+const RearrangeChannelsScreen = ({ navigation }) => {
   const [channels, setChannels] = useState([]);
   const [change, setChange] = useState([]);
   const { colors } = useTheme();
@@ -84,9 +84,9 @@ const EditChannelsScreen = ({ navigation }) => {
                       }
                     }}
                   >
-                    <AntDesign
+                    <Feather
                       style={[{ color: colors.text }, styles.listItemButton]}
-                      name="caretup"
+                      name="arrow-up"
                     />
                   </TouchableOpacity>
                   <TouchableOpacity
@@ -102,9 +102,19 @@ const EditChannelsScreen = ({ navigation }) => {
                       }
                     }}
                   >
-                    <AntDesign
+                    <Feather
                       style={[{ color: colors.text }, styles.listItemButton]}
-                      name="caretdown"
+                      name="arrow-down"
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("EditChannel", { item });
+                    }}
+                  >
+                    <Feather
+                      name="edit-2"
+                      style={[{ color: colors.text }, styles.buttonSmall]}
                     />
                   </TouchableOpacity>
                   <TouchableOpacity
@@ -116,7 +126,7 @@ const EditChannelsScreen = ({ navigation }) => {
                     }}
                   >
                     <MaterialIcons
-                      style={[{ color: "#e33300" }, styles.listItemButton]}
+                      style={[{ color: "#e33300" }, styles.buttonSmall]}
                       name="delete"
                     />
                   </TouchableOpacity>
@@ -147,7 +157,7 @@ const EditChannelsScreen = ({ navigation }) => {
   );
 };
 
-EditChannelsScreen.navigationOptions = ({}) => ({
+RearrangeChannelsScreen.navigationOptions = ({}) => ({
   mode: "modal",
   title: "Edit Channels",
   headerLeft: () => null,
@@ -189,6 +199,11 @@ const styles = StyleSheet.create({
     padding: 3,
     margin: 2,
   },
+  buttonSmall: {
+    margin: 5,
+    padding: 2,
+    fontSize: 23,
+  },
 });
 
-export default EditChannelsScreen;
+export default RearrangeChannelsScreen;

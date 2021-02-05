@@ -271,6 +271,8 @@ const SettingsScreen = ({ navigation }) => {
               <Button
                 title="Done"
                 onPress={() => {
+                  if (defaultSearchEngine === null)
+                    setDefaultSearchEngine("duckduckgo");
                   storeItem("@default-search-engine", defaultSearchEngine);
                   setModalVisible(false);
                 }}

@@ -5,7 +5,7 @@ import BrowserScreen from "./src/screens/BrowserScreen";
 import RemoteScreen from "./src/screens/RemoteScreen";
 import SettingsScreen from "./src/screens/SettingsScreen";
 import NewTabView from "./src/screens/NewTabView";
-import EditChannelsScreen from "./src/screens/EditChannelsScreen";
+import RearrangeChannelsScreen from "./src/screens/RearrangeChannelsScreen";
 import { Provider as SearchUriProvider } from "./src/context/SearchUriContext";
 import { AppearanceProvider, useColorScheme } from "react-native-appearance";
 import {
@@ -14,6 +14,7 @@ import {
   DarkTheme,
 } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import EditChannelModal from "./src/components/EditChannelModal";
 
 const customTheme = {
   dark: true,
@@ -21,7 +22,7 @@ const customTheme = {
   colors: {
     primary: "#3A87FA",
     accent: "#B113FE",
-    background: "#111111",
+    background: "#000000",
     tint: "#fcfcfc",
     card: "#222222",
     border: "#111111",
@@ -44,7 +45,8 @@ const stackNavigator = createStackNavigator(
     Home: NewTabView,
     Remote: RemoteScreen,
     Settings: SettingsScreen,
-    Edit: EditChannelsScreen,
+    Edit: RearrangeChannelsScreen,
+    EditChannel: EditChannelModal,
   },
   {
     initialRouteName: "Home",

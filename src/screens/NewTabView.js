@@ -12,6 +12,7 @@ import {
 import Grid from "react-native-grid-component";
 import BottomNav from "../components/BottomNav";
 import SearchBar from "../components/SearchBar";
+import EditChannelModal from "../components/EditChannelModal";
 import {
   getChannels,
   storeChannels,
@@ -29,6 +30,7 @@ const NewTabView = ({ navigation }) => {
   const [channels, setChannels] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const client = useRemoteMediaClient();
+
   if (client) {
     if (!loaded) {
       AsyncStorage.getItem("@auto-play").then((data) => {
@@ -150,11 +152,12 @@ const NewTabView = ({ navigation }) => {
                           options: [
                             "Play",
                             "Open in browser",
+                            "Edit",
                             "Delete",
                             "Cancel",
                           ],
-                          destructiveButtonIndex: 2,
-                          cancelButtonIndex: 3,
+                          destructiveButtonIndex: 3,
+                          cancelButtonIndex: 4,
                           userInterfaceStyle:
                             scheme === "dark" ? "dark" : "light",
                         },
@@ -175,7 +178,9 @@ const NewTabView = ({ navigation }) => {
                             }
                           } else if (buttonIndex === 1) {
                             navigation.navigate("Browser", { uri: item.uri });
-                          } else if (buttonIndex === 2) {
+                          } else if (buttonIndex == 2) {
+                            navigation.navigate("EditChannel", { item });
+                          } else if (buttonIndex === 3) {
                             const index = getIndex(item, channels);
                             channels.splice(index, 1);
                             setChannels([...channels]);
