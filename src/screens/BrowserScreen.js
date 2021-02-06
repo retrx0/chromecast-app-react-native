@@ -28,6 +28,10 @@ const BrowserScreen = ({ navigation }) => {
   const { colors } = useTheme();
   const [defSearchEngine, setDefSearchEngine] = useState("ecosia");
   const [isCacheAndHsitory, setIsCacheAndHsitory] = useState(false);
+  const [showBottomNav, setShowBottomNav] = useState(true);
+
+  var y = 0;
+  var show = true;
 
   useEffect(() => {
     const qs = String(uri.uri);
@@ -98,6 +102,19 @@ const BrowserScreen = ({ navigation }) => {
         // injectedJavaScript={ts}
         onMessage={_onMessage}
         incognito={true}
+        autoManageStatusBarEnabled
+        showsVerticalScrollIndicator={false}
+        onScroll={(syntheticEvent) => {
+          const { contentOffset } = syntheticEvent.nativeEvent;
+          let tmp = Math.floor(contentOffset.y);
+          if (tmp > 1) {
+            if (tmp - y >= 0) {
+              // console.log(tmp);
+              setShowBottomNav(false);
+            }
+          } else setShowBottomNav(true);
+          y = Math.floor(contentOffset.y);
+        }}
         renderLoading={() => (
           <>
             <View
@@ -145,7 +162,11 @@ const BrowserScreen = ({ navigation }) => {
           });
         }}
       />
-      <BottomNav navigation={navigation} style={styles.bottom}></BottomNav>
+      <BottomNav
+        visible={showBottomNav}
+        navigation={navigation}
+        style={styles.bottom}
+      ></BottomNav>
     </View>
   );
 };

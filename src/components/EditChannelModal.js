@@ -7,69 +7,87 @@ import {
   Modal,
   TextInput,
   Image,
+  Alert,
 } from "react-native";
 import { useColorScheme } from "react-native-appearance";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTheme } from "@react-navigation/native";
 import { color } from "react-native-reanimated";
+import { getChannels, storeChannels } from "../hooks/useChannels";
 
 const EditChannelModal = ({ navigation }) => {
   const channel = navigation.state.params.item;
   const [title, setTitle] = useState(channel.title);
   const [uri, setUri] = useState(channel.uri);
   const [video_url, setVideo_url] = useState(channel.video_url);
+  const [channels, setChannels] = useState([]);
 
   const { colors } = useTheme();
+
+  useEffect(() => {
+    getChannels().then((data) => {
+      setChannels(data);
+    });
+  }, []);
+
   return (
-    <View style={[styles.container, { color: colors.text }]}>
-      <View
-        style={[
-          styles.view,
-          { color: colors.text, backgroundColor: colors.card },
-        ]}
-      >
-        <Image
-          style={[styles.img]}
-          source={{
-            url: `https://s2.googleusercontent.com/s2/favicons?domain=${channel.uri}`,
-          }}
-        />
-        <Text style={[styles.title, { color: colors.text }]}>
-          {channel.title}
-        </Text>
-        <Text style={[styles.sub, { color: colors.text }]}>Title</Text>
-        <CustomInput value={channel.title} onChange={setTitle} theme={colors} />
-        <Text style={[styles.sub, { color: colors.text }]}>Website url</Text>
-        <CustomInput value={channel.uri} onChange={setUri} theme={colors} />
-        <Text style={[styles.sub, { color: colors.text }]}>Video url</Text>
-        <CustomInput
-          value={channel.video_url}
-          onChange={setVideo_url}
-          theme={colors}
-        />
-        <Button
-          style={{ width: 50, height: 30, margin: 10, alignSelf: "center" }}
-          title="Done"
-          onPress={() => {
-            navigation.pop();
-          }}
-        />
-      </View>
+    <View
+      style={[
+        styles.view,
+        { color: colors.text, backgroundColor: colors.card, marginTop: 10 },
+      ]}
+    >
+      <Image
+        style={[styles.img]}
+        source={{
+          url: `https://s2.googleusercontent.com/s2/favicons?domain=${channel.uri}`,
+        }}
+      />
+      <Text style={[styles.title, { color: colors.text }]}>{title}</Text>
+      <Text style={[styles.sub, { color: colors.text }]}>Title</Text>
+      <CustomInput value={title} onChangeText={setTitle} theme={colors} />
+      <Text style={[styles.sub, { color: colors.text }]}>Website url</Text>
+      <CustomInput value={uri} onChangeText={setUri} theme={colors} />
+      <Text style={[styles.sub, { color: colors.text }]}>Video url</Text>
+      <CustomInput
+        value={video_url}
+        onChangeText={setVideo_url}
+        theme={colors}
+      />
+      <Button
+        style={{ width: 50, height: 30, margin: 10, alignSelf: "center" }}
+        title="Save"
+        onPress={() => {
+          let index = getIndex(channel, channels);
+          channels[index].title = title;
+          channels[index].uri = uri;
+          channels[index].video_url = video_url;
+          setChannels([...channels]);
+          storeChannels(channels)
+            .catch(() =>
+              Alert.alert("Something went wrong", "Could not edit channel")
+            )
+            .then(() =>
+              Alert.alert("Channel saved", "Channel saved succesfully")
+            );
+          navigation.navigate("Home");
+        }}
+      />
     </View>
   );
 };
 
-const CustomInput = ({ value, onChange, theme }) => {
+const CustomInput = (props) => {
+  const { theme } = props;
   return (
     <View style={{ height: 45, margin: 3 }}>
       <TextInput
+        {...props}
         clearButtonMode="while-editing"
         keyboardType="default"
-        returnKeyType="done"
+        returnKeyType="default"
         autoCapitalize="none"
         autoCorrect={false}
-        value={value}
-        onChangeText={onChange}
         style={[
           styles.input,
           { color: theme.text, backgroundColor: theme.background },
@@ -77,6 +95,13 @@ const CustomInput = ({ value, onChange, theme }) => {
       />
     </View>
   );
+};
+
+const getIndex = (item, cha) => {
+  let index = cha.findIndex((elem) => {
+    if (elem.uri === item.uri) return true;
+  });
+  return index;
 };
 
 EditChannelModal.navigationOptions = () => ({

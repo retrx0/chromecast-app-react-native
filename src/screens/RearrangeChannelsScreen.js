@@ -8,6 +8,7 @@ import {
   FlatList,
   Image,
   SafeAreaView,
+  Dimensions,
 } from "react-native";
 import { Feather, MaterialIcons, AntDesign } from "@expo/vector-icons";
 import { useTheme } from "@react-navigation/native";
@@ -17,10 +18,12 @@ const RearrangeChannelsScreen = ({ navigation }) => {
   const [channels, setChannels] = useState([]);
   const [change, setChange] = useState([]);
   const { colors } = useTheme();
+  let ScreenHeight = Dimensions.get("window").height;
 
   useEffect(() => {
     getChannels().then((data) => setChannels(data));
   }, []);
+
   return (
     <SafeAreaView>
       <View
@@ -38,7 +41,7 @@ const RearrangeChannelsScreen = ({ navigation }) => {
           data={channels}
           extraData={change}
           keyExtractor={(item) => item.title}
-          style={{ flexDirection: "column", maxHeight: 500 }}
+          style={{ flexDirection: "column", maxHeight: ScreenHeight / 2 }}
           renderItem={({ item, index }) => {
             return (
               <View style={styles.listItem}>

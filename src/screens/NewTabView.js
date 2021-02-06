@@ -213,7 +213,11 @@ const NewTabView = ({ navigation }) => {
           data={channels}
         />
       </View>
-      <BottomNav navigation={navigation} style={styles.bottom}></BottomNav>
+      <BottomNav
+        visible
+        navigation={navigation}
+        style={styles.bottom}
+      ></BottomNav>
     </View>
   );
 };

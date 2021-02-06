@@ -1,4 +1,8 @@
-import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  MaterialIcons,
+  MaterialCommunityIcons,
+  Feather,
+} from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTheme } from "@react-navigation/native";
 import React, { useState, useEffect } from "react";
@@ -12,6 +16,7 @@ import {
   View,
   Modal,
   Button,
+  Share,
 } from "react-native";
 import { useColorScheme } from "react-native-appearance";
 import { storeItem, getItem } from "../hooks/useChannels";
@@ -226,6 +231,38 @@ const SettingsScreen = ({ navigation }) => {
             }}
           />
         </View>
+        <TouchableOpacity
+          onPress={() => {
+            try {
+              const result = Share.share({
+                message: "Checkout CastApp, best live tv app for chromecast",
+                // url: "",
+                title: "Cast App",
+              });
+              if (result.action === Share.sharedAction) {
+                if (result.activityType) {
+                  // shared with activity type of result.activityType
+                } else {
+                  // shared
+                }
+              } else if (result.action === Share.dismissedAction) {
+                // dismissed
+              }
+            } catch (error) {
+              alert(error.message);
+            }
+          }}
+          style={[styles.row, { backgroundColor: colors.card }]}
+        >
+          <Text style={[styles.settingsItemText, { color: colors.text }]}>
+            Share
+          </Text>
+          <Feather
+            name="share"
+            size={25}
+            style={[{ color: colors.text }, styles.settingsIcon]}
+          />
+        </TouchableOpacity>
       </View>
       <Modal visible={modalVisible} transparent={true}>
         <View

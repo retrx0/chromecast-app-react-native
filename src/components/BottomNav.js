@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import {
   MaterialCommunityIcons,
@@ -9,9 +9,9 @@ import {
 import { useTheme } from "@react-navigation/native";
 import { CastButton } from "react-native-google-cast";
 
-const BottomNav = ({ navigation }) => {
+const BottomNav = ({ navigation, visible }) => {
   const { colors } = useTheme();
-  return (
+  return visible ? (
     <View
       style={{
         flexDirection: "row",
@@ -56,7 +56,7 @@ const BottomNav = ({ navigation }) => {
         <Feather style={{ color: colors.text }} name="settings" size={30} />
       </TouchableOpacity>
     </View>
-  );
+  ) : null;
 };
 
 const styles = StyleSheet.create({});
