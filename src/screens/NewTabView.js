@@ -81,8 +81,7 @@ const NewTabView = ({ navigation }) => {
                 },
                 {
                   title: "MBC Action",
-                  uri:
-                    "http://www.3rbcafee.com/2019/04/MBC-Action-Live-Streaming.html",
+                  uri: "http://www.3rbcafee.com/2019/04/MBC-Action-Live.html",
                   video_url:
                     "https://shls-mbcaction-prod-dub.shahid.net/out/v1/68dd761538e5460096c42422199d050b/index.m3u8",
                 },
@@ -91,13 +90,103 @@ const NewTabView = ({ navigation }) => {
                   uri:
                     "http://www.dubaione.ae/content/dubaione/en-ae/live.html",
                   video_url:
-                    "http://www.elahmad.com/tv/m3u8/dubaitv.m3u8?id=dubaione",
+                    "https://dminnvll.cdn.mangomolo.com/dubaione/smil:dubaione.stream.smil/chunklist_b1500000.m3u8",
                 },
                 {
                   title: "Aljazeera",
                   uri: "http://www.aljazeera.com/live",
+                  video_url: "https://live-hls-aje-ak.getaj.net/AJE/04.m3u8",
+                },{
+                  title: "NBC",
+                  uri: "https://www.nbc.com/live?brand=nbc-news",
+                  video_url: "https://nbcnews2.akamaized.net/hls/live/723426/NBCNewsPlaymaker24x7Linear99a3a827-ua/VIDEO_1_4596000.m3u8"
+                },
+                {
+                  title: "Family Guy",
+                  uri: "https://www.stream4free.live/family-guy-hd",
                   video_url:
-                    "https://live-hls-web-aje.getaj.net/AJE/02.m3u8?@amarnettv.live",
+                    "https://sv7.data-stream.top/7d5f6630fd0b5be5bdf954fa5e4cec094af4f34c70d16d259f2b4d78c362120d/hls/familyguy.m3u8",
+                },
+                // {
+                //   title: "A&E",
+                //   uri:
+                //     "http://fomny.com/Menu2/Pop3/Pop2-iframe-progtv-01-ustreamyx.php?iframe=https://ustreamix.to/stream.php?id=ae-tv-usa",
+                //   video_url: "https://hls.ustream.to/A-E-TV-USA.m3u8",
+                // },
+                // {
+                //   title: "Fox Movies",
+                //   uri:
+                //     "http://fomny.com/Video/USA/04/Fox-movies/Fox-movies.php",
+                //   video_url:
+                //     "https://nl1.streamlive.to/freeabr/z5qre6fv2dvkssx/chunks.m3u8?wmsAuthSign=c2VydmVyX3RpbWU9Mi82LzIwMjEgOTo1MToyOSBQTSZoYXNoX3ZhbHVlPWxLMUtna2YxOFZJdkpJbFRSRURSU1E9PSZ2YWxpZG1pbnV0ZXM9MjQwJnN0cm1fbGVuPTIzJmlkPTk4MTQzNg==",
+                // },
+                // {
+                //   title: "HBO US HD",
+                //   uri: "http://fomny.com/Video/USA/04/HBO/HBO.php",
+                //   video_url:
+                //     "https://hls.ustream.to/HBO-USA-HD.m3u8?token=562-3d3-72e-b2f-b60-042-e09-4ab-3bb-27d-1d6-3f2-51d-56b-940-aa4-4c4-ff4-16d-092-28b-8",
+                // },
+                // {
+                //   title: "HBO Family",
+                //   uri: "http://fomny.com/Video/USA/04/HBO/HBO.php",
+                //   video_url:
+                //     "https://liveorigin01.hbogoasia.com:8443/origin/live/main/FAMILY/5-161264867.ts?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9kYWkzZmQxb2gzMjV5LmNsb3VkZnJvbnQubmV0L29yaWdpbi9saXZlL21haW4vKiIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTYxMjc4MjM4Nn19fV19&Signature=m81ZmgxgIqX3v4IUYOfplklDsoJbunl2ckg64wPsmxovl3OKo0Oc2raHIAp1zpc26SfXHcES2VgmCuXV7HPiz0q29BEO4XO-IdyU6FFW9Y2buc9HA9hjxMECYVfhpxGUKMpXgNnPW55rDJU8YsCFGoK66u0mfjQN~YNirVIRYeTXhWE2cqk1xRJGCAtXBW0rXT8dzTF4S3S2OWrfVlYSXxkDJggz-EiDbDd3P-WmGPA5ELE9gZEbkXdzm8KvITQEiTnLlZ7rvXwXz8blXmoUAExY6mKQG-L5uAOq3~j8oitYil6QOn8RM-ltSh7pJi2~iIey~ZIgQUe6UAn3HUhFbQ__&Key-Pair-Id=APKAJFBTWETXLROKW43A",
+                // },
+                // {
+                //   title: "Comedy Central",
+                //   uri:
+                //     "http://fomny.com/Video/USA/01/Comedy-central/Comedy-Central.php",
+                //   video_url:
+                //     "https://nl1.streamlive.to/freeabr/tbmztl7gj7kol9w/chunks.m3u8?wmsAuthSign=c2VydmVyX3RpbWU9Mi82LzIwMjEgMTA6MDA6NDEgUE0maGFzaF92YWx1ZT1nazdXdnRyZi9Zb1Z0L1FwRFBYZWFBPT0mdmFsaWRtaW51dGVzPTI0MCZzdHJtX2xlbj0yMyZpZD05NTI2NDc=",
+                // },
+                // {
+                //   title: "Nat Geo",
+                //   uri:
+                //     "http://fomny.com/Video/USA/02/National-Geographic-USA)/national-geographic.php#",
+                //   video_url:
+                //     "https://nl1.streamlive.to/freeabr/xw4xmoxhyhey0hk/chunks.m3u8?wmsAuthSign=c2VydmVyX3RpbWU9Mi82LzIwMjEgMTA6MDc6MTYgUE0maGFzaF92YWx1ZT15VXI4Y2ZNelZOVlJPNXphSzlaeGZ3PT0mdmFsaWRtaW51dGVzPTI0MCZzdHJtX2xlbj0yMyZpZD04NTE1OTU=",
+                // },
+                // {
+                //   title: "USA Network",
+                //   uri:
+                //     "http://fomny.com/Video/USA/04/usa%20-network/usa%20-network.php#",
+                //   video_url:
+                //     "https://hls.ustream.to/USA-Network.m3u8?token=ad8-f6a-a14-12c-cd0-fe6-8c4-fc7-e32-ed2-468-d76-792-60b-ca7-ebd-bf9-214-b64-63a-b2c-9-a5d-d1c-e8t-f6c",
+                // },
+                {
+                  title: "MTV Yo",
+                  uri: "http://fomny.com/Video/Music/01/MTV/MTV-channel.php",
+                  video_url:
+                    "http://pluto-live.plutotv.net/egress/chandler/pluto01/live/VIACBS01/master_2400.m3u8",
+                },
+                {
+                  title: "MTV Pop",
+                  uri: "http://fomny.com/Video/Music/01/MTV/MTV-channel.php",
+                  video_url:
+                    "http://pluto-live.plutotv.net/egress/chandler/pluto01/live/VIACBS02/master_2400.m3u8",
+                },
+                // {
+                //   title: "MTV Classic",
+                //   uri: "http://fomny.com/Video/Music/01/MTV/MTV-channel.php",
+                //   video_url:
+                //     "https://nl1.streamlive.to/freeabr/a97wwdz4xhl29ok/chunks.m3u8?wmsAuthSign=c2VydmVyX3RpbWU9Mi82LzIwMjEgMTA6MjI6MzQgUE0maGFzaF92YWx1ZT1yMTJQN1c3UExIWTVxWWNrcFVpRHZBPT0mdmFsaWRtaW51dGVzPTI0MCZzdHJtX2xlbj0yMyZpZD0yMzU5NTk=",
+                // },
+                {
+                  title: "The Office",
+                  uri: "https://www.stream4free.live/the-office",
+                  video_url:
+                    "https://sv2.data-stream.top/7d5f6630fd0b5be5bdf954fa5e4cec094af4f34c70d16d259f2b4d78c362120d/hls/theoffice.m3u8",
+                },
+                {
+                  title: "Workholics",
+                  uri: "https://www.stream4free.live/workaholics",
+                  video_url:
+                    "https://sv2.data-stream.top/7d5f6630fd0b5be5bdf954fa5e4cec094af4f34c70d16d259f2b4d78c362120d/hls/workaholics.m3u8",
+                },
+                {
+                  title: "Friends",
+                  uri: "https://www.stream4free.live/friends",
+                  video_url: "https://sv2.data-stream.top/7d5f6630fd0b5be5bdf954fa5e4cec094af4f34c70d16d259f2b4d78c362120d/hls/friends.m3u8",
                 },
               ];
               storeChannels(cha);
