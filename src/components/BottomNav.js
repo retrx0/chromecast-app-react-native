@@ -33,7 +33,7 @@ const BottomNav = ({ navigation, visible }) => {
           }
         }}
       >
-        <AntDesign style={{ color: colors.text }} name="arrowleft" size={30} />
+        <Feather style={{ color: colors.text }} name="chevron-left" size={30} />
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
@@ -43,7 +43,7 @@ const BottomNav = ({ navigation, visible }) => {
           }
         }}
       >
-        <AntDesign style={{ color: colors.text }} name="arrowright" size={30} />
+        <Feather style={{ color: colors.text }} name="chevron-right" size={30} />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate("Remote")}>
         <MaterialCommunityIcons

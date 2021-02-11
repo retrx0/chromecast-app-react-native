@@ -12,3 +12,5 @@ React-native chromecast application with remote functionality
 ## Framework
 
 [React Native](https://www.reactnative.dev)
+
+<img src = "./assets/castvid.gif"  width = 343, height = 747px>
