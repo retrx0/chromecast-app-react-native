@@ -74,8 +74,7 @@ const NewTabView = ({ navigation }) => {
                 },
                 {
                   title: "MBC 2",
-                  uri:
-                    "http://www.3rbcafee.com/2019/04/MBC-2-Live-Streaming.html",
+                  uri: "http://www.3rbcafee.com/2019/04/MBC-2-Live-Streaming.html",
                   video_url:
                     "https://shls-mbc2-prod-dub.shahid.net/out/v1/b4befe19798745fe986f5a9bfba62126/index_4.m3u8",
                 },
@@ -86,9 +85,14 @@ const NewTabView = ({ navigation }) => {
                     "https://shls-mbcaction-prod-dub.shahid.net/out/v1/68dd761538e5460096c42422199d050b/index.m3u8",
                 },
                 {
+                  title: "MBC 4",
+                  uri: "http://mbc.net",
+                  video_url:
+                    "https://shls-mbc4-prod-dub.shahid.net/out/v1/c08681f81775496ab4afa2bac7ae7638/index_2.m3u8",
+                },
+                {
                   title: "Dubai One",
-                  uri:
-                    "http://www.dubaione.ae/content/dubaione/en-ae/live.html",
+                  uri: "http://www.dubaione.ae/content/dubaione/en-ae/live.html",
                   video_url:
                     "https://dminnvll.cdn.mangomolo.com/dubaione/smil:dubaione.stream.smil/chunklist_b1500000.m3u8",
                 },
@@ -96,30 +100,19 @@ const NewTabView = ({ navigation }) => {
                   title: "Aljazeera",
                   uri: "http://www.aljazeera.com/live",
                   video_url: "https://live-hls-aje-ak.getaj.net/AJE/04.m3u8",
-                },{
-                  title: "NBC",
-                  uri: "https://www.nbc.com/live?brand=nbc-news",
-                  video_url: "https://nbcnews2.akamaized.net/hls/live/723426/NBCNewsPlaymaker24x7Linear99a3a827-ua/VIDEO_1_4596000.m3u8"
                 },
                 {
-                  title: "Family Guy",
-                  uri: "https://www.stream4free.live/family-guy-hd",
+                  title: "NBC",
+                  uri: "https://www.nbc.com/live?brand=nbc-news",
                   video_url:
-                    "https://sv7.data-stream.top/7d5f6630fd0b5be5bdf954fa5e4cec094af4f34c70d16d259f2b4d78c362120d/hls/familyguy.m3u8",
+                    "https://nbcnews2.akamaized.net/hls/live/723426/NBCNewsPlaymaker24x7Linear99a3a827-ua/VIDEO_1_4596000.m3u8",
                 },
-                // {
-                //   title: "A&E",
-                //   uri:
-                //     "http://fomny.com/Menu2/Pop3/Pop2-iframe-progtv-01-ustreamyx.php?iframe=https://ustreamix.to/stream.php?id=ae-tv-usa",
-                //   video_url: "https://hls.ustream.to/A-E-TV-USA.m3u8",
-                // },
-                // {
-                //   title: "Fox Movies",
-                //   uri:
-                //     "http://fomny.com/Video/USA/04/Fox-movies/Fox-movies.php",
-                //   video_url:
-                //     "https://nl1.streamlive.to/freeabr/z5qre6fv2dvkssx/chunks.m3u8?wmsAuthSign=c2VydmVyX3RpbWU9Mi82LzIwMjEgOTo1MToyOSBQTSZoYXNoX3ZhbHVlPWxLMUtna2YxOFZJdkpJbFRSRURSU1E9PSZ2YWxpZG1pbnV0ZXM9MjQwJnN0cm1fbGVuPTIzJmlkPTk4MTQzNg==",
-                // },
+                {
+                  title: "Flix HD",
+                  uri: "http://www.flixhd.com",
+                  video_url:
+                    "https://y5w8j4a9.ssl.hwcdn.net/andflixhd/tracks-v1a1/index.m3u8",
+                },
                 // {
                 //   title: "HBO US HD",
                 //   uri: "http://fomny.com/Video/USA/04/HBO/HBO.php",
@@ -171,23 +164,6 @@ const NewTabView = ({ navigation }) => {
                 //   video_url:
                 //     "https://nl1.streamlive.to/freeabr/a97wwdz4xhl29ok/chunks.m3u8?wmsAuthSign=c2VydmVyX3RpbWU9Mi82LzIwMjEgMTA6MjI6MzQgUE0maGFzaF92YWx1ZT1yMTJQN1c3UExIWTVxWWNrcFVpRHZBPT0mdmFsaWRtaW51dGVzPTI0MCZzdHJtX2xlbj0yMyZpZD0yMzU5NTk=",
                 // },
-                {
-                  title: "The Office",
-                  uri: "https://www.stream4free.live/the-office",
-                  video_url:
-                    "https://sv2.data-stream.top/7d5f6630fd0b5be5bdf954fa5e4cec094af4f34c70d16d259f2b4d78c362120d/hls/theoffice.m3u8",
-                },
-                {
-                  title: "Workholics",
-                  uri: "https://www.stream4free.live/workaholics",
-                  video_url:
-                    "https://sv2.data-stream.top/7d5f6630fd0b5be5bdf954fa5e4cec094af4f34c70d16d259f2b4d78c362120d/hls/workaholics.m3u8",
-                },
-                {
-                  title: "Friends",
-                  uri: "https://www.stream4free.live/friends",
-                  video_url: "https://sv2.data-stream.top/7d5f6630fd0b5be5bdf954fa5e4cec094af4f34c70d16d259f2b4d78c362120d/hls/friends.m3u8",
-                },
               ];
               storeChannels(cha);
               setChannels(cha);
@@ -202,7 +178,7 @@ const NewTabView = ({ navigation }) => {
   const { colors } = useTheme();
   const scheme = useColorScheme();
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <SearchBar navigation={navigation} style={{ marginHorizontal: 10 }} />
       <View style={{ flex: 1 }}>
         <Text
@@ -424,8 +400,8 @@ const styles = StyleSheet.create({
       height: 2,
     },
     shadowColor: "#000",
-    shadowOpacity: 0.05,
-    shadowRadius: 3,
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
     elevation: 5,
   },
 });

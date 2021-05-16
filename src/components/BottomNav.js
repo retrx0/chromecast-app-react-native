@@ -5,6 +5,7 @@ import {
   Feather,
   AntDesign,
   Ionicons,
+  EvilIcons,
 } from "@expo/vector-icons";
 import { useTheme } from "@react-navigation/native";
 import { CastButton } from "react-native-google-cast";
@@ -15,14 +16,20 @@ const BottomNav = ({ navigation, visible }) => {
     <View
       style={{
         flexDirection: "row",
-        alignItems: "baseline",
+        alignItems: "flex-start",
         justifyContent: "space-around",
         backgroundColor: "#fcfcfc",
-        borderTopLeftRadius: 12,
-        borderTopRightRadius: 12,
-        height: 70,
+        height: 80,
         padding: 10,
-        backgroundColor: colors.background,
+        backgroundColor: colors.card,
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowColor: "#000",
+        shadowOpacity: 0.05,
+        shadowRadius: 5,
+        elevation: 5,
       }}
     >
       <TouchableOpacity
@@ -33,7 +40,11 @@ const BottomNav = ({ navigation, visible }) => {
           }
         }}
       >
-        <Feather style={{ color: colors.text }} name="chevron-left" size={30} />
+        <EvilIcons
+          style={{ color: colors.text }}
+          name="chevron-left"
+          size={40}
+        />
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
@@ -43,17 +54,21 @@ const BottomNav = ({ navigation, visible }) => {
           }
         }}
       >
-        <Feather style={{ color: colors.text }} name="chevron-right" size={30} />
+        <EvilIcons
+          style={{ color: colors.text }}
+          name="chevron-right"
+          size={40}
+        />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate("Remote")}>
-        <MaterialCommunityIcons
+        <Ionicons
           style={{ color: colors.text }}
-          name="remote-tv"
+          name="ios-tv-outline"
           size={30}
         />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
-        <Feather style={{ color: colors.text }} name="settings" size={30} />
+        <EvilIcons style={{ color: colors.text }} name="gear" size={35} />
       </TouchableOpacity>
     </View>
   ) : null;

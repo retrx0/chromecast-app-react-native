@@ -25,10 +25,11 @@ const RearrangeChannelsScreen = ({ navigation }) => {
   }, []);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ backgroundColor: colors.background, flex: 1 }}>
       <View
         style={[
           {
+            flex: 1,
             backgroundColor: colors.card,
             marginVertical: 10,
             marginHorizontal: 8,
@@ -41,7 +42,7 @@ const RearrangeChannelsScreen = ({ navigation }) => {
           data={channels}
           extraData={change}
           keyExtractor={(item) => item.title}
-          style={{ flexDirection: "column", maxHeight: ScreenHeight / 2 }}
+          style={{ flexDirection: "column" }}
           renderItem={({ item, index }) => {
             return (
               <View style={styles.listItem}>
@@ -194,8 +195,9 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
   },
   listItem: {
-    marginVertical: 5,
+    marginVertical: 15,
     justifyContent: "space-between",
+    flexDirection: "row",
   },
   listItemButton: {
     fontSize: 30,

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import {
   AntDesign,
+  Feather,
   Ionicons,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
@@ -11,6 +12,7 @@ import GoogleCast, {
   useRemoteMediaClient,
   useCastSession,
 } from "react-native-google-cast";
+import { color } from "react-native-reanimated";
 
 const RemoteScreen = ({ navigation }) => {
   const { colors } = useTheme();
@@ -18,8 +20,14 @@ const RemoteScreen = ({ navigation }) => {
   const session = useCastSession();
   const [channels, setChannels] = useState([]);
   const [idx, setIdx] = useState(0);
+  const [pause_play, setPause_play] = useState("play");
+  const [mute_unmute, setMute_unmute] = useState("volume-high");
+  const [volume, setVolume] = useState(0);
 
   useEffect(() => {
+    if (client) {
+      session.getVolume().then((v) => setVolume(v));
+    }
     getChannels().then((data) => {
       if (data !== null) {
         setChannels(data);
@@ -28,10 +36,16 @@ const RemoteScreen = ({ navigation }) => {
   }, []);
 
   return (
-    <View style={{ flex: 1, justifyContent: "center" }}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        backgroundColor: colors.background,
+      }}
+    >
       <View style={[styles.row]}>
         <View
-          style={[styles.col, { borderColor: colors.border, borderWidth: 1 }]}
+          style={[styles.col, styles.raised, { backgroundColor: colors.card }]}
         >
           <Text style={{ alignSelf: "center", color: colors.text }}>
             Channels
@@ -84,33 +98,132 @@ const RemoteScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
         <View
-          style={[styles.col, { borderColor: colors.border, borderWidth: 1 }]}
+          style={[styles.col, styles.raised, { backgroundColor: colors.card }]}
         >
           <Text style={{ color: colors.text, alignSelf: "center", margin: 10 }}>
-            Controls
+            Volume
           </Text>
           <TouchableOpacity
             onPress={() => {
-              GoogleCast.showExpandedControls();
+              if (client) {
+                if (volume < 1.0) {
+                  client.setStreamVolume(volume + 0.1);
+                  setVolume(volume + 0.1);
+                }
+              }
             }}
           >
-            <MaterialCommunityIcons
+            <Feather
               style={{ color: colors.text, alignSelf: "center" }}
-              name="remote"
+              name="plus"
+              size={80}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              if (client) {
+                if (volume >= 0) {
+                  client.setStreamVolume(volume - 0.1);
+                  setVolume(volume - 0.1);
+                }
+              }
+            }}
+          >
+            <Feather
+              style={{ color: colors.text, alignSelf: "center" }}
+              name="minus"
               size={80}
             />
           </TouchableOpacity>
         </View>
       </View>
-
-      <View style={styles.row}>
+      <View
+        style={[styles.row, styles.raised, { backgroundColor: colors.card }]}
+      >
+        <TouchableOpacity
+          onPress={() => {
+            if (client) {
+              if (pause_play === "pause") {
+                client.play();
+                setPause_play("play");
+              } else {
+                client.pause();
+                setPause_play("pause");
+              }
+            }
+          }}
+        >
+          <Ionicons
+            style={{ color: colors.text, alignSelf: "center" }}
+            name={pause_play}
+            size={60}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            GoogleCast.showExpandedControls();
+          }}
+        >
+          <MaterialCommunityIcons
+            style={{ color: colors.text, alignSelf: "center" }}
+            name="remote"
+            size={55}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            if (client) {
+              if (mute_unmute === "volume-mute") {
+                setMute_unmute("volume-high");
+                client.setStreamMuted(false);
+              } else {
+                setMute_unmute("volume-mute");
+                client.setStreamMuted(true);
+              }
+            }
+          }}
+        >
+          <Ionicons
+            style={{ color: colors.text, alignSelf: "center" }}
+            name={mute_unmute}
+            size={60}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            if (client) {
+              GoogleCast.getSessionManager().endCurrentSession(true);
+            }
+          }}
+        >
+          <Ionicons
+            style={{ color: colors.text, alignSelf: "center" }}
+            name="ios-stop"
+            size={60}
+          />
+        </TouchableOpacity>
+      </View>
+      <View
+        style={[styles.row, styles.raised, { backgroundColor: colors.card }]}
+      >
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("Edit");
           }}
           style={{ flexDirection: "row" }}
         >
-          <Text style={{ color: colors.text }}>Edit channels list </Text>
+          <Text
+            style={[
+              {
+                color: colors.text,
+                padding: 20,
+                borderRadius: 8,
+                textAlignVertical: "center",
+              },
+            ]}
+          >
+            Edit channels{" "}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -144,6 +257,16 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginHorizontal: 10,
     padding: 10,
+  },
+  raised: {
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowColor: "#000",
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 5,
   },
   centered: {
     flex: 1,

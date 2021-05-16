@@ -24,10 +24,33 @@ const customTheme = {
     accent: "#B113FE",
     background: "#000000",
     tint: "#fcfcfc",
-    card: "#222222",
+    card: "#151515",
     border: "#111111",
     surface: "#F1F7ED",
     text: "#FcFcFc",
+    error: "#B71F0E",
+    disabled: "#BEC6C6",
+    placeholder: "#f2f2f2",
+    backdrop: "#001021",
+  },
+  fonts: {
+    regular: "Helvetica Neue",
+    medium: "Helvetica Neue Light",
+  },
+};
+
+const lightTheme = {
+  dark: true,
+  roundness: 4,
+  colors: {
+    primary: "#3A87FA",
+    accent: "#B113FE",
+    background: "#FAFBFD",
+    tint: "#fcfcfc",
+    card: "#FFFFFF",
+    border: "#FCFCFC",
+    surface: "#F1F7ED",
+    text: "#000000",
     error: "#B71F0E",
     disabled: "#BEC6C6",
     placeholder: "#f2f2f2",
@@ -72,7 +95,7 @@ export default () => {
     <SearchUriProvider>
       <AppearanceProvider>
         <NavigationContainer
-          theme={darkmode === "dark" ? customTheme : DefaultTheme}
+          theme={darkmode === "dark" ? customTheme : lightTheme}
         >
           <App theme={darkmode} />
         </NavigationContainer>

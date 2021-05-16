@@ -2,6 +2,7 @@ import {
   MaterialIcons,
   MaterialCommunityIcons,
   Feather,
+  EvilIcons,
 } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTheme } from "@react-navigation/native";
@@ -29,10 +30,8 @@ const SettingsScreen = ({ navigation }) => {
   const [isAutoPlayEnabled, setIsAutoPlayEnabled] = useState(null);
   const [isStoreChacheEnabled, setIsStoreCacheEnabled] = useState(null);
   const [defaultSearchEngine, setDefaultSearchEngine] = useState("duckduckgo");
-  const [
-    isUseDefaultChannlesEnabled,
-    setIsUseDefaultChannelsEnabled,
-  ] = useState(null);
+  const [isUseDefaultChannlesEnabled, setIsUseDefaultChannelsEnabled] =
+    useState(null);
 
   const [modalVisible, setModalVisible] = useState(null);
 
@@ -88,8 +87,11 @@ const SettingsScreen = ({ navigation }) => {
   }, []);
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={styles.container}>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      style={{ backgroundColor: colors.background }}
+    >
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
         <Text
           style={{
             color: colors.text,
@@ -139,8 +141,8 @@ const SettingsScreen = ({ navigation }) => {
           <Text style={[styles.settingsItemText, { color: colors.text }]}>
             Edit Channels
           </Text>
-          <MaterialIcons
-            name="edit"
+          <MaterialCommunityIcons
+            name="playlist-edit"
             size={25}
             style={[{ color: colors.text }, styles.settingsIcon]}
           />
@@ -180,8 +182,8 @@ const SettingsScreen = ({ navigation }) => {
           <Text style={[styles.settingsItemText, { color: colors.text }]}>
             Clear Channels
           </Text>
-          <MaterialIcons
-            name="clear-all"
+          <MaterialCommunityIcons
+            name="playlist-remove"
             size={25}
             style={[{ color: colors.text }, styles.settingsIcon]}
           />
@@ -257,9 +259,9 @@ const SettingsScreen = ({ navigation }) => {
           <Text style={[styles.settingsItemText, { color: colors.text }]}>
             Share
           </Text>
-          <Feather
-            name="share"
-            size={25}
+          <EvilIcons
+            name="share-apple"
+            size={30}
             style={[{ color: colors.text }, styles.settingsIcon]}
           />
         </TouchableOpacity>

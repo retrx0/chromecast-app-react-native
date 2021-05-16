@@ -13,6 +13,7 @@ const SearchBar = ({ navigation }) => {
         padding: 5,
         marginVertical: 5,
         flexDirection: "row",
+        margin: 2,
       }}
     >
       <TextInput
@@ -26,6 +27,14 @@ const SearchBar = ({ navigation }) => {
           paddingLeft: 7,
           backgroundColor: colors.card,
           color: colors.text,
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowColor: "#000",
+          shadowOpacity: 0.05,
+          shadowRadius: 5,
+          elevation: 5,
         }}
         placeholder="Type url"
         clearButtonMode="while-editing"
