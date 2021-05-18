@@ -17,4 +17,6 @@ Used react native google cast library in bareflow to integrate casiting with chr
 
 [React Native](https://www.reactnative.dev)
 
-<img src = "./assets/castvid.gif"  width = 343, height = 747px>
+<!-- <img src = "./assets/castvid.gif"  width = 343, height = 747px> -->
+
+<img src = "./assets/sc0.png"  width = 343, height = 747px style="display: inline-block; margin: 10px"><img src = "./assets/sc1.png"  width = 343, height = 747px style="display: inline-block; margin: 10px">

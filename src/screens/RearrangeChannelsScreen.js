@@ -32,8 +32,8 @@ const RearrangeChannelsScreen = ({ navigation }) => {
             flex: 1,
             backgroundColor: colors.card,
             marginVertical: 10,
-            marginHorizontal: 8,
-            paddingHorizontal: 5,
+            marginHorizontal: 5,
+            paddingHorizontal: 3,
             borderRadius: 5,
           },
         ]}
@@ -116,8 +116,8 @@ const RearrangeChannelsScreen = ({ navigation }) => {
                       navigation.navigate("EditChannel", { item });
                     }}
                   >
-                    <Feather
-                      name="edit-2"
+                    <AntDesign
+                      name="edit"
                       style={[{ color: colors.text }, styles.buttonSmall]}
                     />
                   </TouchableOpacity>

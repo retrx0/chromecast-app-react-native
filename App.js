@@ -15,6 +15,7 @@ import {
 } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import EditChannelModal from "./src/components/EditChannelModal";
+import { DataContextProvider } from "./src/context/DataContext";
 
 const customTheme = {
   dark: true,
@@ -24,7 +25,7 @@ const customTheme = {
     accent: "#B113FE",
     background: "#000000",
     tint: "#fcfcfc",
-    card: "#151515",
+    card: "#1E1E1E",
     border: "#111111",
     surface: "#F1F7ED",
     text: "#FcFcFc",
@@ -93,13 +94,15 @@ export default () => {
   });
   return (
     <SearchUriProvider>
-      <AppearanceProvider>
-        <NavigationContainer
-          theme={darkmode === "dark" ? customTheme : lightTheme}
-        >
-          <App theme={darkmode} />
-        </NavigationContainer>
-      </AppearanceProvider>
+      <DataContextProvider>
+        <AppearanceProvider>
+          <NavigationContainer
+            theme={darkmode === "dark" ? customTheme : lightTheme}
+          >
+            <App theme={darkmode} />
+          </NavigationContainer>
+        </AppearanceProvider>
+      </DataContextProvider>
     </SearchUriProvider>
   );
 };

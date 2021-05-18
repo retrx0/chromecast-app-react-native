@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, Slider } from "react-native";
+// import Slider from "@react-native-community/slider";
 import {
   AntDesign,
   Feather,
@@ -13,16 +14,18 @@ import GoogleCast, {
   useCastSession,
 } from "react-native-google-cast";
 import { color } from "react-native-reanimated";
+import { useContext } from "react";
+import DataContext from "../context/DataContext";
 
 const RemoteScreen = ({ navigation }) => {
   const { colors } = useTheme();
   const client = useRemoteMediaClient();
   const session = useCastSession();
   const [channels, setChannels] = useState([]);
-  const [idx, setIdx] = useState(0);
   const [pause_play, setPause_play] = useState("play");
   const [mute_unmute, setMute_unmute] = useState("volume-high");
   const [volume, setVolume] = useState(0);
+  const { index, setIndex } = useContext(DataContext);
 
   useEffect(() => {
     if (client) {
@@ -35,6 +38,19 @@ const RemoteScreen = ({ navigation }) => {
     });
   }, []);
 
+  const playMedia = (client, idx) => {
+    if (client) {
+      client.loadMedia({
+        mediaInfo: {
+          contentUrl: channels[idx].video_url,
+          metadata: {
+            title: channels[idx].title,
+          },
+        },
+      });
+    }
+  };
+
   return (
     <View
       style={{
@@ -43,99 +59,80 @@ const RemoteScreen = ({ navigation }) => {
         backgroundColor: colors.background,
       }}
     >
-      <View style={[styles.row]}>
+      <Text style={{ fontSize: 30, margin: 10, textAlign: "center" }}>
+        {/*channels[index].title*/}
+      </Text>
+      <View style={[styles.col]}>
+        <Text style={{ alignSelf: "center", color: colors.text, fontSize: 18 }}>
+          Channels
+        </Text>
         <View
-          style={[styles.col, styles.raised, { backgroundColor: colors.card }]}
+          style={[
+            styles.row,
+            styles.raised,
+            { backgroundColor: colors.card, width: 300 },
+          ]}
         >
-          <Text style={{ alignSelf: "center", color: colors.text }}>
-            Channels
-          </Text>
           <TouchableOpacity
             onPress={() => {
-              if (idx === 0) {
-                setIdx(channels.length - 1);
-              } else setIdx(idx - 1);
-              if (client) {
-                client.loadMedia({
-                  mediaInfo: {
-                    contentUrl: channels[idx].video_url,
-                    metadata: {
-                      title: channels[idx].title,
-                    },
-                  },
-                });
+              if (index === 0) {
+                playMedia(client, channels.length - 1);
+                setIndex(channels.length - 1);
+              } else {
+                playMedia(client, index - 1);
+                setIndex(index - 1);
               }
             }}
           >
             <AntDesign
               style={{ color: colors.text }}
-              name="caretup"
-              size={80}
+              name="caretleft"
+              size={90}
             />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              if (idx === channels.length - 1) {
-                setIdx(0);
-              } else setIdx(idx + 1);
-              if (client) {
-                client.loadMedia({
-                  mediaInfo: {
-                    contentUrl: channels[idx].video_url,
-                    metadata: {
-                      title: channels[idx].title,
-                    },
-                  },
-                });
+              if (index === channels.length - 1) {
+                playMedia(client, 0);
+                setIndex(0);
+              } else {
+                playMedia(client, index + 1);
+                setIndex(index + 1);
               }
             }}
           >
             <AntDesign
               style={{ color: colors.text }}
-              name="caretdown"
-              size={80}
+              name="caretright"
+              size={90}
             />
           </TouchableOpacity>
         </View>
-        <View
-          style={[styles.col, styles.raised, { backgroundColor: colors.card }]}
-        >
-          <Text style={{ color: colors.text, alignSelf: "center", margin: 10 }}>
-            Volume
-          </Text>
-          <TouchableOpacity
-            onPress={() => {
-              if (client) {
-                if (volume < 1.0) {
-                  client.setStreamVolume(volume + 0.1);
-                  setVolume(volume + 0.1);
-                }
-              }
-            }}
-          >
-            <Feather
-              style={{ color: colors.text, alignSelf: "center" }}
-              name="plus"
-              size={80}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              if (client) {
-                if (volume >= 0) {
-                  client.setStreamVolume(volume - 0.1);
-                  setVolume(volume - 0.1);
-                }
-              }
-            }}
-          >
-            <Feather
-              style={{ color: colors.text, alignSelf: "center" }}
-              name="minus"
-              size={80}
-            />
-          </TouchableOpacity>
-        </View>
+      </View>
+      <View
+        style={[styles.row, styles.raised, { backgroundColor: colors.card }]}
+      >
+        <Ionicons
+          style={{ color: colors.text, alignSelf: "center" }}
+          name={"volume-low"}
+          size={30}
+        />
+        <Slider
+          style={{ width: 300 }}
+          minimumValue={0.0}
+          step={0.01}
+          maximumValue={1.0}
+          onValueChange={(v) => {
+            if (client) {
+              client.setStreamVolume(v);
+            }
+          }}
+        />
+        <Ionicons
+          style={{ color: colors.text, alignSelf: "center" }}
+          name={"volume-high"}
+          size={30}
+        />
       </View>
       <View
         style={[styles.row, styles.raised, { backgroundColor: colors.card }]}
@@ -193,6 +190,7 @@ const RemoteScreen = ({ navigation }) => {
           onPress={() => {
             if (client) {
               GoogleCast.getSessionManager().endCurrentSession(true);
+              navigation.navigate("Home");
             }
           }}
         >
@@ -215,6 +213,7 @@ const RemoteScreen = ({ navigation }) => {
           <Text
             style={[
               {
+                fontSize: 18,
                 color: colors.text,
                 padding: 20,
                 borderRadius: 8,
@@ -248,7 +247,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     borderRadius: 15,
     marginHorizontal: 10,
-    padding: 5,
+    padding: 10,
   },
   col: {
     flexDirection: "column",
@@ -264,8 +263,8 @@ const styles = StyleSheet.create({
       height: 2,
     },
     shadowColor: "#000",
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
+    shadowOpacity: 0.08,
+    shadowRadius: 3,
     elevation: 5,
   },
   centered: {

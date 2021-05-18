@@ -33,7 +33,7 @@ const SearchBar = ({ navigation }) => {
           },
           shadowColor: "#000",
           shadowOpacity: 0.05,
-          shadowRadius: 5,
+          shadowRadius: 2,
           elevation: 5,
         }}
         placeholder="Type url"

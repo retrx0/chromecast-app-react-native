@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   StyleSheet,
   View,
@@ -25,11 +25,13 @@ import GoogleCast, { CastButton } from "react-native-google-cast";
 import { useRemoteMediaClient } from "react-native-google-cast";
 import { useColorScheme } from "react-native-appearance";
 import { Feather } from "@expo/vector-icons";
+import DataContext from "../context/DataContext";
 
 const NewTabView = ({ navigation }) => {
   const [channels, setChannels] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const client = useRemoteMediaClient();
+  const { index, setIndex } = useContext(DataContext);
 
   if (client) {
     if (!loaded) {
@@ -42,8 +44,7 @@ const NewTabView = ({ navigation }) => {
                 metadata: {
                   // images: [
                   //   {
-                  //     url:
-                  //       "https://commondatastorage.googleapis.com/gtv-videos-bucket/CastVideos/images/480x270/BigBuckBunny.jpg",
+                  //     url: `https://s2.googleusercontent.com/s2/favicons?domain=${channels[0].uri}`,
                   //   },
                   // ],
                   title: channels[0].title,
@@ -227,14 +228,15 @@ const NewTabView = ({ navigation }) => {
                             scheme === "dark" ? "dark" : "light",
                         },
                         (buttonIndex) => {
-                          const index = getIndex(item, channels);
+                          const indx = getIndex(item, channels);
                           if (buttonIndex === 0) {
                             if (client) {
+                              setIndex(indx);
                               client.loadMedia({
                                 mediaInfo: {
-                                  contentUrl: channels[index].video_url,
+                                  contentUrl: channels[indx].video_url,
                                   metadata: {
-                                    title: channels[index].title,
+                                    title: channels[indx].title,
                                   },
                                 },
                               });
@@ -246,8 +248,8 @@ const NewTabView = ({ navigation }) => {
                           } else if (buttonIndex == 2) {
                             navigation.navigate("EditChannel", { item });
                           } else if (buttonIndex === 3) {
-                            const index = getIndex(item, channels);
-                            channels.splice(index, 1);
+                            const indx = getIndex(item, channels);
+                            channels.splice(indx, 1);
                             setChannels([...channels]);
                             storeChannels([...channels]);
                           }
